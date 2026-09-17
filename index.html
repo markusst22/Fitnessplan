@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111214">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aufbau">
+<title>Aufbau – Training & Ernährung</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8F%8B%EF%B8%8F</text></svg>">
+<style>
+:root{
+  --bg:#f7f7f8; --surface:#ffffff; --surface-2:#f0f0f2; --line:#e3e3e6;
+  --text:#111214; --text-2:#6b6d73; --text-3:#9b9da3;
+  --accent:#E8734A; --accent-soft:#fdf0ea;
+  --push:#E8734A; --pull:#4A8FE8; --beine:#4AA36B;
+  --ok:#3f9c62; --radius:16px; --radius-sm:10px;
+  --sh:0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111214; --surface:#1a1b1e; --surface-2:#232428; --line:#2c2e33;
+    --text:#f2f2f3; --text-2:#a0a2a8; --text-3:#6e7077;
+    --accent:#F08356; --accent-soft:#2a1d17;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+}
+}
+:root[data-theme="dark"]{
+    --bg:#111214; --surface:#1a1b1e; --surface-2:#232428; --line:#2c2e33;
+    --text:#f2f2f3; --text-2:#a0a2a8; --text-3:#6e7077;
+    --accent:#F08356; --accent-soft:#2a1d17;
+    --sh:0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.02em}
+button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
+input,select{font:inherit;color:inherit}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky;top:0;z-index:50;background:var(--bg);
+  padding:calc(12px + env(safe-area-inset-top)) 20px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+header.scrolled{border-bottom-color:var(--line)}
+header h1{font-size:23px}
+.hsub{font-size:12.5px;color:var(--text-3);margin-top:1px;font-weight:450;letter-spacing:0}
+.icon-btn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--surface);box-shadow:var(--sh)}
+.icon-btn svg{width:19px;height:19px;stroke:var(--text-2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Layout ---------- */
+main{padding:4px 20px 24px;max-width:640px;margin:0 auto}
+.view{display:none;animation:fade .22s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--sh);padding:18px;margin-bottom:14px}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.sec-title{font-size:12px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin:26px 0 10px}
+.sec-title:first-child{margin-top:8px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.muted{color:var(--text-2);font-size:14px}
+.tiny{color:var(--text-3);font-size:12.5px}
+
+/* ---------- Bottom nav ---------- */
+nav{
+  background:var(--surface);
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  background:color-mix(in srgb, var(--surface) 96%, transparent);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+}
+nav button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;color:var(--text-3);font-size:11px;font-weight:550;border-radius:12px}
+nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.active{color:var(--accent)}
+
+/* ---------- Training ---------- */
+.day-pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--surface-2);color:var(--text-2)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.hero{background:var(--surface);border-radius:var(--radius);box-shadow:var(--sh);padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--acc,var(--accent))}
+.hero h2{font-size:26px;margin-bottom:2px}
+.ex{background:var(--surface);border-radius:var(--radius);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.ex-head{padding:15px 18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.ex-num{flex:0 0 26px;height:26px;border-radius:8px;background:var(--surface-2);display:grid;place-items:center;font-size:12.5px;font-weight:650;color:var(--text-2);margin-top:1px}
+.ex-title{font-weight:600;font-size:15.5px;line-height:1.35}
+.ex-meta{font-size:12.5px;color:var(--text-3);margin-top:3px}
+.chev{margin-left:auto;flex:0 0 auto;transition:transform .2s;color:var(--text-3);font-size:13px;margin-top:4px}
+.ex.open .chev{transform:rotate(90deg)}
+.ex-body{display:none;padding:0 18px 16px}
+.ex.open .ex-body{display:block}
+.note{background:var(--surface-2);border-radius:var(--radius-sm);padding:11px 13px;font-size:13.5px;color:var(--text-2);margin-bottom:14px}
+.note b{color:var(--text);font-weight:600}
+.sets{display:flex;flex-direction:column;gap:8px}
+.set{display:grid;grid-template-columns:26px 1fr 1fr 40px;gap:8px;align-items:center}
+.set-lbl{font-size:12.5px;color:var(--text-3);font-weight:600}
+.fld{position:relative}
+.fld input{width:100%;background:var(--surface-2);border:1.5px solid transparent;border-radius:var(--radius-sm);padding:10px 34px 10px 12px;font-size:15px;font-weight:550;text-align:left;outline:none;transition:border-color .15s}
+.fld input:focus{border-color:var(--accent)}
+.fld span{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-3);pointer-events:none}
+.set-done{width:34px;height:34px;border-radius:50%;border:1.8px solid var(--line);display:grid;place-items:center;margin-left:auto;transition:all .15s}
+.set-done.on{background:var(--ok);border-color:var(--ok)}
+.set-done svg{width:15px;height:15px;stroke:var(--text-3);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.set-done.on svg{stroke:#fff}
+.last{font-size:12px;color:var(--text-3);margin-top:9px}
+
+.btn{display:block;width:100%;padding:15px;border-radius:14px;background:var(--accent);color:#fff;font-weight:650;font-size:15.5px;text-align:center;transition:transform .1s,opacity .15s}
+.btn:active{transform:scale(.985)}
+.btn.sec{background:var(--surface);color:var(--text);box-shadow:var(--sh)}
+.btn.ghost{background:var(--surface-2);color:var(--text-2);font-size:14px;padding:12px}
+.btn[disabled]{opacity:.45}
+.btn-row{display:flex;gap:10px;margin-top:6px}
+.btn-row .btn{margin:0}
+
+/* ---------- Ernährung ---------- */
+.days{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;margin:0 -20px;padding-left:20px;padding-right:20px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day-btn{flex:0 0 auto;min-width:50px;padding:9px 6px;border-radius:13px;background:var(--surface);box-shadow:var(--sh);text-align:center;transition:all .15s}
+.day-btn .d{font-size:11px;font-weight:600;color:var(--text-3);letter-spacing:.04em}
+.day-btn .n{font-size:16px;font-weight:650;margin-top:1px}
+.day-btn.active{background:var(--text);color:var(--bg)}
+.day-btn.active .d{color:var(--bg);opacity:.6}
+.day-btn .fish{font-size:9px;margin-top:2px;line-height:1}
+.macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.macro{background:var(--surface);border-radius:var(--radius-sm);box-shadow:var(--sh);padding:11px 8px;text-align:center}
+.macro .v{font-size:17px;font-weight:650;letter-spacing:-.02em}
+.macro .l{font-size:10.5px;color:var(--text-3);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:1px}
+.macro.hit .v{color:var(--ok)}
+.meal{background:var(--surface);border-radius:var(--radius);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.meal-head{padding:15px 18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.meal-slot{font-size:10.5px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.meal h3{font-size:16px;margin-top:2px;line-height:1.3}
+.badge{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:6px;background:var(--surface-2);color:var(--text-2);margin-left:6px;vertical-align:1px}
+.meal-body{display:none;padding:0 18px 18px}
+.meal.open .meal-body{display:block}
+.ing{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ing:last-child{border-bottom:none}
+.ing .q{color:var(--text-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+ol.steps{margin:14px 0 0;padding-left:20px;font-size:14px;color:var(--text-2)}
+ol.steps li{margin-bottom:7px}
+.reroll{margin-left:auto;flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;color:var(--text-3);font-size:14px}
+
+/* ---------- Einkauf ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.chip{padding:8px 13px;border-radius:99px;background:var(--surface);box-shadow:var(--sh);font-size:13.5px;font-weight:550;transition:all .15s}
+.chip.on{background:var(--text);color:var(--bg)}
+.shop-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.shop-item:last-child{border-bottom:none}
+.cb{flex:0 0 auto;width:23px;height:23px;border-radius:7px;border:1.8px solid var(--line);display:grid;place-items:center;margin-top:1px;transition:all .15s}
+.cb.on{background:var(--ok);border-color:var(--ok)}
+.cb svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.cb.on svg{opacity:1}
+.shop-item.done .si-name{text-decoration:line-through;color:var(--text-3)}
+.si-name{font-size:14.5px;font-weight:500;line-height:1.35}
+.si-q{font-size:12.5px;color:var(--text-3);margin-top:2px;font-variant-numeric:tabular-nums}
+.si-pack{color:var(--accent);font-weight:600}
+
+/* ---------- Modal ---------- */
+.sheet{position:fixed;inset:0;z-index:100;display:none}
+.sheet.open{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.sheet-in{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow-y:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:8px 20px calc(28px + env(safe-area-inset-bottom));animation:up .25s cubic-bezier(.3,.9,.3,1)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.grip{width:36px;height:4px;border-radius:99px;background:var(--line);margin:8px auto 16px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.opt:last-of-type{border-bottom:none}
+.opt-l{font-size:14.5px;font-weight:550}
+.seg{display:flex;background:var(--surface-2);border-radius:10px;padding:3px;gap:2px}
+.seg button{padding:7px 14px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--text-2)}
+.seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stepper{display:flex;align-items:center;gap:4px;background:var(--surface-2);border-radius:10px;padding:3px}
+.stepper button{width:32px;height:32px;border-radius:8px;font-size:17px;font-weight:600;color:var(--text-2);display:grid;place-items:center}
+.stepper .val{min-width:66px;text-align:center;font-size:14px;font-weight:650;font-variant-numeric:tabular-nums}
+.empty{text-align:center;padding:44px 20px;color:var(--text-3);font-size:14.5px}
+.hist{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hist:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<header id="hdr">
+  <div>
+    <h1 id="hTitle">Training</h1>
+    <div class="hsub" id="hSub"></div>
+  </div>
+  <button class="icon-btn" onclick="openSettings()" aria-label="Einstellungen">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+</header>
+
+<main>
+  <section id="v-training" class="view active"></section>
+  <section id="v-essen" class="view"></section>
+  <section id="v-einkauf" class="view"></section>
+</main>
+
+<nav>
+  <button id="t-training" class="active" onclick="showTab('training')">
+    <svg viewBox="0 0 24 24"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>Training</button>
+  <button id="t-essen" onclick="showTab('essen')">
+    <svg viewBox="0 0 24 24"><path d="M4 3v7a3 3 0 0 0 3 3v8M7 3v6M10 3v6M17.5 3c-1.5 2-2 4-2 6.5 0 2 .8 3 2 3.5v8"/></svg>Ernährung</button>
+  <button id="t-einkauf" onclick="showTab('einkauf')">
+    <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.6 8.5a2 2 0 0 1-2 1.5H9.2a2 2 0 0 1-2-1.6L5.3 4H3"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>Einkauf</button>
+</nav>
+
+<div class="sheet" id="sheet">
+  <div class="sheet-bg" onclick="closeSheet()"></div>
+  <div class="sheet-in" id="sheetIn"></div>
+</div>
+<script>
+const DATEN = {"version":"1.0","koerper":{"geschlecht":"männlich","groesse_cm":173,"gewicht_kg":68,"verbrauch_kcal":2300},"ziele":{"kcal":2800,"protein_g_pro_kg":1.5,"protein_g":102,"fischtage":2,"shakes_max":3},"equipment":["Langhanteln (variable Gewichte)","Kurzhanteln (variable Gewichte)","Langhantel-Rack mit verstellbaren Ablagen, Klimmzugstange und Dip-Griffen","Kabelzug (Überkopf- und Bodenzug)","verstellbare Hantelbank"],"zutaten":{"haehnchenbrust":{"name":"Hähnchenbrustfilet","kcal":105,"p":23.0,"f":1.3,"kh":0.0,"abt":"Fleisch","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"putenbrust":{"name":"Putenbrustfilet","kcal":105,"p":24.0,"f":1.0,"kh":0.0,"abt":"Fleisch","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"rinderhack":{"name":"Rinderhackfleisch 5% Fett","kcal":133,"p":21.5,"f":5.0,"kh":0.0,"abt":"Fleisch","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"putenhack":{"name":"Putenhackfleisch","kcal":148,"p":20.0,"f":7.0,"kh":0.0,"abt":"Fleisch","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"schweinefilet":{"name":"Schweinefilet","kcal":110,"p":22.0,"f":2.0,"kh":0.0,"abt":"Fleisch","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"rindersteak":{"name":"Rinderhüftsteak","kcal":130,"p":22.0,"f":4.5,"kh":0.0,"abt":"Fleisch","pack":250,"packname":"250 g Packung","stueck":null,"vorrat":false},"haehnchenschenkel":{"name":"Hähnchenschenkel ohne Haut","kcal":145,"p":19.0,"f":7.5,"kh":0.0,"abt":"Fleisch","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"lachs":{"name":"Lachsfilet","kcal":208,"p":20.0,"f":13.0,"kh":0.0,"abt":"Fisch & TK","pack":250,"packname":"250 g (2 Filets)","stueck":125,"vorrat":false},"kabeljau":{"name":"Kabeljaufilet (TK)","kcal":82,"p":18.0,"f":0.7,"kh":0.0,"abt":"Fisch & TK","pack":400,"packname":"400 g TK-Packung","stueck":null,"vorrat":false},"seelachs":{"name":"Seelachsfilet (TK)","kcal":81,"p":18.0,"f":0.9,"kh":0.0,"abt":"Fisch & TK","pack":400,"packname":"400 g TK-Packung","stueck":null,"vorrat":false},"forelle":{"name":"Forellenfilet","kcal":140,"p":20.0,"f":6.5,"kh":0.0,"abt":"Fisch & TK","pack":200,"packname":"200 g (2 Filets)","stueck":100,"vorrat":false},"thunfisch":{"name":"Thunfisch im eigenen Saft (abgetropft)","kcal":108,"p":24.0,"f":1.0,"kh":0.0,"abt":"Konserven & Saucen","pack":104,"packname":"Dose 150 g (104 g abgetropft)","stueck":null,"vorrat":false},"makrele":{"name":"Makrelenfilet geräuchert","kcal":220,"p":21.0,"f":15.0,"kh":0.0,"abt":"Fisch & TK","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"garnelen":{"name":"Garnelen (TK, geschält)","kcal":85,"p":19.0,"f":1.0,"kh":0.0,"abt":"Fisch & TK","pack":200,"packname":"200 g TK-Beutel","stueck":null,"vorrat":false},"zander":{"name":"Zanderfilet (TK)","kcal":83,"p":19.0,"f":0.7,"kh":0.0,"abt":"Fisch & TK","pack":300,"packname":"300 g TK-Packung","stueck":null,"vorrat":false},"lachs_raeucher":{"name":"Räucherlachs","kcal":180,"p":21.0,"f":10.0,"kh":0.0,"abt":"Kühlregal","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"ei":{"name":"Eier (Größe M)","kcal":143,"p":12.6,"f":9.9,"kh":0.7,"abt":"Kühlregal","pack":580,"packname":"10er Packung","stueck":58,"vorrat":false},"eiklar":{"name":"Eiklar","kcal":48,"p":11.0,"f":0.2,"kh":0.7,"abt":"Kühlregal","pack":500,"packname":"500 g Flasche","stueck":null,"vorrat":false},"magerquark":{"name":"Magerquark","kcal":67,"p":12.0,"f":0.3,"kh":4.0,"abt":"Kühlregal","pack":500,"packname":"500 g Becher","stueck":null,"vorrat":false},"skyr":{"name":"Skyr natur","kcal":63,"p":11.0,"f":0.2,"kh":4.0,"abt":"Kühlregal","pack":450,"packname":"450 g Becher","stueck":null,"vorrat":false},"huettenkaese":{"name":"Hüttenkäse","kcal":98,"p":12.5,"f":4.3,"kh":3.0,"abt":"Kühlregal","pack":200,"packname":"200 g Becher","stueck":null,"vorrat":false},"gr_joghurt":{"name":"Griechischer Joghurt 2%","kcal":82,"p":9.0,"f":2.0,"kh":4.0,"abt":"Kühlregal","pack":400,"packname":"400 g Becher","stueck":null,"vorrat":false},"mozzarella":{"name":"Mozzarella light","kcal":200,"p":21.0,"f":12.0,"kh":1.0,"abt":"Kühlregal","pack":125,"packname":"125 g Packung","stueck":null,"vorrat":false},"feta":{"name":"Feta","kcal":260,"p":14.0,"f":21.0,"kh":1.0,"abt":"Kühlregal","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"parmesan":{"name":"Parmesan gerieben","kcal":398,"p":36.0,"f":28.0,"kh":0.0,"abt":"Kühlregal","pack":100,"packname":"100 g Packung","stueck":null,"vorrat":false},"gouda":{"name":"Gouda jung gerieben","kcal":356,"p":25.0,"f":28.0,"kh":0.0,"abt":"Kühlregal","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"frischkaese":{"name":"Frischkäse leicht","kcal":130,"p":11.0,"f":8.0,"kh":3.5,"abt":"Kühlregal","pack":200,"packname":"200 g Becher","stueck":null,"vorrat":false},"milch":{"name":"Milch 1,5%","kcal":47,"p":3.4,"f":1.5,"kh":4.9,"abt":"Kühlregal","pack":1000,"packname":"1 l Packung","stueck":null,"vorrat":false},"hafermilch":{"name":"Haferdrink","kcal":45,"p":0.8,"f":1.5,"kh":6.6,"abt":"Trockenwaren","pack":1000,"packname":"1 l Packung","stueck":null,"vorrat":false},"schmand":{"name":"Schmand","kcal":240,"p":3.0,"f":24.0,"kh":3.0,"abt":"Kühlregal","pack":200,"packname":"200 g Becher","stueck":null,"vorrat":false},"whey":{"name":"Whey Protein Pulver (Vanille)","kcal":380,"p":80.0,"f":5.0,"kh":6.0,"abt":"Trockenwaren","pack":900,"packname":"900 g Dose","stueck":null,"vorrat":false},"haferflocken":{"name":"Haferflocken zart","kcal":372,"p":13.5,"f":7.0,"kh":58.7,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"basmatireis":{"name":"Basmatireis","kcal":350,"p":7.5,"f":0.9,"kh":77.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"vk_nudeln":{"name":"Vollkornnudeln","kcal":340,"p":14.0,"f":2.5,"kh":60.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"nudeln":{"name":"Nudeln (Hartweizen)","kcal":350,"p":12.0,"f":1.5,"kh":70.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"quinoa":{"name":"Quinoa","kcal":368,"p":14.0,"f":6.0,"kh":58.0,"abt":"Trockenwaren","pack":400,"packname":"400 g Packung","stueck":null,"vorrat":false},"bulgur":{"name":"Bulgur","kcal":342,"p":12.0,"f":1.3,"kh":63.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"couscous":{"name":"Couscous","kcal":350,"p":12.0,"f":1.5,"kh":70.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"polenta":{"name":"Polenta (Maisgrieß)","kcal":358,"p":8.0,"f":1.5,"kh":76.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"rote_linsen":{"name":"Rote Linsen","kcal":345,"p":24.0,"f":1.5,"kh":55.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"beluga_linsen":{"name":"Belugalinsen","kcal":340,"p":25.0,"f":1.5,"kh":50.0,"abt":"Trockenwaren","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"kartoffeln":{"name":"Kartoffeln festkochend","kcal":70,"p":2.0,"f":0.1,"kh":15.0,"abt":"Obst & Gemüse","pack":1500,"packname":"1,5 kg Netz","stueck":null,"vorrat":false},"suesskartoffel":{"name":"Süßkartoffeln","kcal":86,"p":1.6,"f":0.1,"kh":18.0,"abt":"Obst & Gemüse","pack":1000,"packname":"1 kg Netz","stueck":null,"vorrat":false},"kichererbsen":{"name":"Kichererbsen (Dose, abgetropft)","kcal":120,"p":7.0,"f":2.5,"kh":15.0,"abt":"Konserven & Saucen","pack":250,"packname":"Dose 400 g (250 g abgetropft)","stueck":null,"vorrat":false},"kidneybohnen":{"name":"Kidneybohnen (Dose, abgetropft)","kcal":105,"p":7.5,"f":0.5,"kh":13.0,"abt":"Konserven & Saucen","pack":250,"packname":"Dose 400 g (250 g abgetropft)","stueck":null,"vorrat":false},"schwarze_bohnen":{"name":"Schwarze Bohnen (Dose, abgetropft)","kcal":110,"p":7.5,"f":0.5,"kh":14.0,"abt":"Konserven & Saucen","pack":250,"packname":"Dose 400 g (250 g abgetropft)","stueck":null,"vorrat":false},"raeuchertofu":{"name":"Räuchertofu","kcal":175,"p":18.0,"f":11.0,"kh":1.0,"abt":"Kühlregal","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"brokkoli":{"name":"Brokkoli","kcal":34,"p":3.8,"f":0.4,"kh":2.7,"abt":"Obst & Gemüse","pack":500,"packname":"500 g","stueck":null,"vorrat":false},"blumenkohl":{"name":"Blumenkohl","kcal":25,"p":2.5,"f":0.3,"kh":2.3,"abt":"Obst & Gemüse","pack":800,"packname":"1 Kopf (ca. 800 g)","stueck":null,"vorrat":false},"zucchini":{"name":"Zucchini","kcal":19,"p":1.6,"f":0.4,"kh":2.2,"abt":"Obst & Gemüse","pack":250,"packname":"Stück (ca. 250 g)","stueck":250,"vorrat":false},"paprika":{"name":"Paprika rot","kcal":37,"p":1.2,"f":0.4,"kh":6.4,"abt":"Obst & Gemüse","pack":500,"packname":"3er-Pack (ca. 500 g)","stueck":170,"vorrat":false},"kirschtomaten":{"name":"Kirschtomaten","kcal":20,"p":0.9,"f":0.2,"kh":3.0,"abt":"Obst & Gemüse","pack":250,"packname":"250 g Schale","stueck":null,"vorrat":false},"passierte_tomaten":{"name":"Passierte Tomaten","kcal":32,"p":1.5,"f":0.3,"kh":5.0,"abt":"Konserven & Saucen","pack":500,"packname":"500 g Packung","stueck":null,"vorrat":false},"tomatenmark":{"name":"Tomatenmark","kcal":82,"p":4.5,"f":0.5,"kh":13.0,"abt":"Konserven & Saucen","pack":200,"packname":"200 g Tube","stueck":null,"vorrat":false},"gurke":{"name":"Salatgurke","kcal":15,"p":0.6,"f":0.2,"kh":2.0,"abt":"Obst & Gemüse","pack":400,"packname":"Stück (ca. 400 g)","stueck":400,"vorrat":false},"karotten":{"name":"Karotten","kcal":41,"p":0.9,"f":0.2,"kh":7.0,"abt":"Obst & Gemüse","pack":1000,"packname":"1 kg Beutel","stueck":80,"vorrat":false},"zwiebel":{"name":"Zwiebeln","kcal":40,"p":1.2,"f":0.2,"kh":7.0,"abt":"Obst & Gemüse","pack":1000,"packname":"1 kg Netz","stueck":100,"vorrat":false},"rote_zwiebel":{"name":"Rote Zwiebeln","kcal":40,"p":1.2,"f":0.2,"kh":7.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g Netz","stueck":100,"vorrat":false},"knoblauch":{"name":"Knoblauchzehen","kcal":140,"p":6.0,"f":0.5,"kh":28.0,"abt":"Obst & Gemüse","pack":150,"packname":"Knolle (ca. 10 Zehen)","stueck":5,"vorrat":false},"spinat_tk":{"name":"Blattspinat (TK)","kcal":25,"p":3.0,"f":0.4,"kh":1.0,"abt":"Fisch & TK","pack":450,"packname":"450 g TK-Packung","stueck":null,"vorrat":false},"babyspinat":{"name":"Babyspinat","kcal":23,"p":2.9,"f":0.4,"kh":1.0,"abt":"Obst & Gemüse","pack":125,"packname":"125 g Beutel","stueck":null,"vorrat":false},"champignons":{"name":"Champignons","kcal":22,"p":3.0,"f":0.3,"kh":0.6,"abt":"Obst & Gemüse","pack":250,"packname":"250 g Schale","stueck":null,"vorrat":false},"aubergine":{"name":"Aubergine","kcal":25,"p":1.0,"f":0.2,"kh":3.0,"abt":"Obst & Gemüse","pack":300,"packname":"Stück (ca. 300 g)","stueck":300,"vorrat":false},"rosenkohl":{"name":"Rosenkohl","kcal":43,"p":3.4,"f":0.3,"kh":3.5,"abt":"Obst & Gemüse","pack":500,"packname":"500 g","stueck":null,"vorrat":false},"gruene_bohnen":{"name":"Grüne Bohnen (TK)","kcal":31,"p":1.9,"f":0.2,"kh":5.0,"abt":"Fisch & TK","pack":750,"packname":"750 g TK-Beutel","stueck":null,"vorrat":false},"erbsen":{"name":"Erbsen (TK)","kcal":81,"p":5.4,"f":0.4,"kh":11.0,"abt":"Fisch & TK","pack":750,"packname":"750 g TK-Beutel","stueck":null,"vorrat":false},"mais":{"name":"Mais (Dose, abgetropft)","kcal":86,"p":3.2,"f":1.2,"kh":15.0,"abt":"Konserven & Saucen","pack":285,"packname":"Dose 425 g (285 g abgetropft)","stueck":null,"vorrat":false},"rotkohl":{"name":"Rotkohl","kcal":31,"p":1.4,"f":0.2,"kh":4.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g","stueck":null,"vorrat":false},"weisskohl":{"name":"Weißkohl / Spitzkohl","kcal":25,"p":1.3,"f":0.2,"kh":4.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g","stueck":null,"vorrat":false},"lauch":{"name":"Lauch","kcal":29,"p":2.1,"f":0.3,"kh":3.3,"abt":"Obst & Gemüse","pack":250,"packname":"Stange (ca. 250 g)","stueck":250,"vorrat":false},"rucola":{"name":"Rucola","kcal":25,"p":2.6,"f":0.7,"kh":2.0,"abt":"Obst & Gemüse","pack":125,"packname":"125 g Beutel","stueck":null,"vorrat":false},"feldsalat":{"name":"Feldsalat","kcal":21,"p":1.8,"f":0.4,"kh":0.7,"abt":"Obst & Gemüse","pack":125,"packname":"125 g Beutel","stueck":null,"vorrat":false},"eisbergsalat":{"name":"Eisbergsalat","kcal":13,"p":0.7,"f":0.2,"kh":2.0,"abt":"Obst & Gemüse","pack":400,"packname":"Kopf (ca. 400 g)","stueck":null,"vorrat":false},"radieschen":{"name":"Radieschen","kcal":14,"p":1.0,"f":0.1,"kh":2.0,"abt":"Obst & Gemüse","pack":200,"packname":"Bund (ca. 200 g)","stueck":null,"vorrat":false},"kuerbis":{"name":"Hokkaidokürbis","kcal":63,"p":1.7,"f":0.5,"kh":11.0,"abt":"Obst & Gemüse","pack":1000,"packname":"Stück (ca. 1 kg)","stueck":null,"vorrat":false},"spargel":{"name":"Grüner Spargel","kcal":20,"p":2.2,"f":0.2,"kh":2.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g Bund","stueck":null,"vorrat":false},"avocado":{"name":"Avocado","kcal":160,"p":2.0,"f":15.0,"kh":1.0,"abt":"Obst & Gemüse","pack":140,"packname":"Stück (ca. 140 g Fruchtfleisch)","stueck":140,"vorrat":false},"sellerie":{"name":"Staudensellerie","kcal":16,"p":0.7,"f":0.2,"kh":2.2,"abt":"Obst & Gemüse","pack":400,"packname":"Bund (ca. 400 g)","stueck":null,"vorrat":false},"ingwer":{"name":"Ingwer","kcal":80,"p":1.8,"f":0.8,"kh":15.0,"abt":"Obst & Gemüse","pack":150,"packname":"Knolle (ca. 150 g)","stueck":null,"vorrat":false},"chili":{"name":"Chilischote","kcal":40,"p":2.0,"f":0.4,"kh":7.0,"abt":"Obst & Gemüse","pack":50,"packname":"Packung (ca. 50 g)","stueck":10,"vorrat":false},"fruehlingszwiebel":{"name":"Frühlingszwiebeln","kcal":32,"p":1.8,"f":0.2,"kh":5.0,"abt":"Obst & Gemüse","pack":100,"packname":"Bund (ca. 100 g)","stueck":20,"vorrat":false},"petersilie":{"name":"Petersilie","kcal":47,"p":4.4,"f":0.4,"kh":3.0,"abt":"Obst & Gemüse","pack":30,"packname":"Bund / Topf","stueck":null,"vorrat":false},"basilikum":{"name":"Basilikum","kcal":41,"p":3.1,"f":0.8,"kh":2.0,"abt":"Obst & Gemüse","pack":30,"packname":"Topf","stueck":null,"vorrat":false},"koriander":{"name":"Koriander","kcal":23,"p":2.1,"f":0.5,"kh":1.0,"abt":"Obst & Gemüse","pack":30,"packname":"Bund / Topf","stueck":null,"vorrat":false},"dill":{"name":"Dill","kcal":43,"p":3.5,"f":1.1,"kh":2.0,"abt":"Obst & Gemüse","pack":30,"packname":"Bund","stueck":null,"vorrat":false},"schnittlauch":{"name":"Schnittlauch","kcal":30,"p":3.3,"f":0.7,"kh":1.5,"abt":"Obst & Gemüse","pack":30,"packname":"Bund / Topf","stueck":null,"vorrat":false},"minze":{"name":"Minze","kcal":44,"p":3.3,"f":0.7,"kh":2.0,"abt":"Obst & Gemüse","pack":30,"packname":"Topf","stueck":null,"vorrat":false},"banane":{"name":"Bananen","kcal":89,"p":1.1,"f":0.3,"kh":21.0,"abt":"Obst & Gemüse","pack":600,"packname":"ca. 5 Stück","stueck":120,"vorrat":false},"apfel":{"name":"Äpfel","kcal":52,"p":0.3,"f":0.2,"kh":12.0,"abt":"Obst & Gemüse","pack":750,"packname":"ca. 5 Stück","stueck":150,"vorrat":false},"heidelbeeren":{"name":"Heidelbeeren","kcal":57,"p":0.7,"f":0.3,"kh":12.0,"abt":"Obst & Gemüse","pack":125,"packname":"125 g Schale","stueck":null,"vorrat":false},"erdbeeren":{"name":"Erdbeeren","kcal":32,"p":0.7,"f":0.3,"kh":6.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g Schale","stueck":null,"vorrat":false},"himbeeren":{"name":"Himbeeren","kcal":52,"p":1.2,"f":0.7,"kh":5.0,"abt":"Obst & Gemüse","pack":125,"packname":"125 g Schale","stueck":null,"vorrat":false},"beeren_tk":{"name":"Beerenmischung (TK)","kcal":45,"p":1.0,"f":0.4,"kh":8.0,"abt":"Fisch & TK","pack":300,"packname":"300 g TK-Beutel","stueck":null,"vorrat":false},"kiwi":{"name":"Kiwi","kcal":61,"p":1.1,"f":0.5,"kh":11.0,"abt":"Obst & Gemüse","pack":400,"packname":"5er Schale","stueck":80,"vorrat":false},"mango":{"name":"Mango","kcal":60,"p":0.8,"f":0.4,"kh":13.0,"abt":"Obst & Gemüse","pack":300,"packname":"Stück (ca. 300 g)","stueck":300,"vorrat":false},"ananas":{"name":"Ananas","kcal":50,"p":0.5,"f":0.1,"kh":12.0,"abt":"Obst & Gemüse","pack":400,"packname":"400 g frisch geschnitten","stueck":null,"vorrat":false},"birne":{"name":"Birnen","kcal":57,"p":0.4,"f":0.1,"kh":12.0,"abt":"Obst & Gemüse","pack":800,"packname":"ca. 5 Stück","stueck":160,"vorrat":false},"trauben":{"name":"Weintrauben","kcal":69,"p":0.7,"f":0.2,"kh":16.0,"abt":"Obst & Gemüse","pack":500,"packname":"500 g Schale","stueck":null,"vorrat":false},"zitrone":{"name":"Zitronen","kcal":29,"p":1.1,"f":0.3,"kh":3.0,"abt":"Obst & Gemüse","pack":500,"packname":"Netz (ca. 5 Stück)","stueck":100,"vorrat":false},"limette":{"name":"Limetten","kcal":30,"p":0.7,"f":0.2,"kh":3.0,"abt":"Obst & Gemüse","pack":180,"packname":"3er Netz","stueck":60,"vorrat":false},"datteln":{"name":"Datteln (entsteint)","kcal":282,"p":2.5,"f":0.4,"kh":63.0,"abt":"Trockenwaren","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"olivenoel":{"name":"Olivenöl","kcal":884,"p":0.0,"f":100.0,"kh":0.0,"abt":"Öle, Nüsse & Backen","pack":500,"packname":"500 ml Flasche","stueck":null,"vorrat":false},"rapsoel":{"name":"Rapsöl","kcal":884,"p":0.0,"f":100.0,"kh":0.0,"abt":"Öle, Nüsse & Backen","pack":1000,"packname":"1 l Flasche","stueck":null,"vorrat":false},"kokosoel":{"name":"Kokosöl","kcal":890,"p":0.0,"f":99.0,"kh":0.0,"abt":"Öle, Nüsse & Backen","pack":250,"packname":"250 ml Glas","stueck":null,"vorrat":false},"butter":{"name":"Butter","kcal":741,"p":0.7,"f":82.0,"kh":0.6,"abt":"Kühlregal","pack":250,"packname":"250 g Packung","stueck":null,"vorrat":false},"mandeln":{"name":"Mandeln","kcal":579,"p":21.0,"f":50.0,"kh":9.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"walnuesse":{"name":"Walnusskerne","kcal":654,"p":15.0,"f":65.0,"kh":7.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"cashews":{"name":"Cashewkerne","kcal":553,"p":18.0,"f":44.0,"kh":30.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"erdnussbutter":{"name":"Erdnussmus (ohne Zucker)","kcal":600,"p":25.0,"f":50.0,"kh":12.0,"abt":"Öle, Nüsse & Backen","pack":350,"packname":"350 g Glas","stueck":null,"vorrat":false},"leinsamen":{"name":"Leinsamen geschrotet","kcal":534,"p":18.0,"f":42.0,"kh":1.6,"abt":"Öle, Nüsse & Backen","pack":250,"packname":"250 g Packung","stueck":null,"vorrat":false},"chiasamen":{"name":"Chiasamen","kcal":486,"p":17.0,"f":31.0,"kh":8.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"sonnenblumenkerne":{"name":"Sonnenblumenkerne","kcal":584,"p":21.0,"f":51.0,"kh":11.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"kuerbiskerne":{"name":"Kürbiskerne","kcal":559,"p":30.0,"f":49.0,"kh":5.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"sesam":{"name":"Sesam","kcal":573,"p":17.0,"f":50.0,"kh":12.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"tahini":{"name":"Tahini (Sesammus)","kcal":595,"p":17.0,"f":54.0,"kh":10.0,"abt":"Öle, Nüsse & Backen","pack":300,"packname":"300 g Glas","stueck":null,"vorrat":false},"kakao":{"name":"Backkakao","kcal":350,"p":20.0,"f":11.0,"kh":20.0,"abt":"Öle, Nüsse & Backen","pack":125,"packname":"125 g Packung","stueck":null,"vorrat":false},"zartbitter":{"name":"Zartbitterschokolade 85%","kcal":560,"p":10.0,"f":46.0,"kh":20.0,"abt":"Öle, Nüsse & Backen","pack":100,"packname":"100 g Tafel","stueck":null,"vorrat":false},"kokosraspel":{"name":"Kokosraspeln","kcal":660,"p":6.0,"f":65.0,"kh":7.0,"abt":"Öle, Nüsse & Backen","pack":200,"packname":"200 g Packung","stueck":null,"vorrat":false},"honig":{"name":"Honig","kcal":304,"p":0.3,"f":0.0,"kh":82.0,"abt":"Konserven & Saucen","pack":500,"packname":"500 g Glas","stueck":null,"vorrat":false},"ahornsirup":{"name":"Ahornsirup","kcal":260,"p":0.0,"f":0.0,"kh":67.0,"abt":"Konserven & Saucen","pack":250,"packname":"250 ml Flasche","stueck":null,"vorrat":false},"sojasauce":{"name":"Sojasauce","kcal":53,"p":8.0,"f":0.0,"kh":5.0,"abt":"Konserven & Saucen","pack":150,"packname":"150 ml Flasche","stueck":null,"vorrat":false},"senf":{"name":"Senf mittelscharf","kcal":66,"p":4.0,"f":4.0,"kh":4.0,"abt":"Konserven & Saucen","pack":250,"packname":"250 g Glas","stueck":null,"vorrat":false},"balsamico":{"name":"Balsamico-Essig","kcal":88,"p":0.5,"f":0.0,"kh":17.0,"abt":"Konserven & Saucen","pack":500,"packname":"500 ml Flasche","stueck":null,"vorrat":false},"apfelessig":{"name":"Apfelessig","kcal":20,"p":0.0,"f":0.0,"kh":0.0,"abt":"Konserven & Saucen","pack":500,"packname":"500 ml Flasche","stueck":null,"vorrat":false},"currypaste":{"name":"Rote Currypaste","kcal":100,"p":3.0,"f":5.0,"kh":10.0,"abt":"Konserven & Saucen","pack":195,"packname":"195 g Glas","stueck":null,"vorrat":false},"kokosmilch":{"name":"Kokosmilch","kcal":190,"p":2.0,"f":19.0,"kh":3.0,"abt":"Konserven & Saucen","pack":400,"packname":"400 ml Dose","stueck":null,"vorrat":false},"bruehe":{"name":"Gemüsebrühe (Pulver)","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":250,"packname":"250 g Glas","stueck":null,"vorrat":true},"salz":{"name":"Salz","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"pfeffer":{"name":"Pfeffer","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"paprikapulver":{"name":"Paprikapulver edelsüß","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"kreuzkuemmel":{"name":"Kreuzkümmel gemahlen","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"oregano":{"name":"Oregano getrocknet","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"thymian":{"name":"Thymian getrocknet","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"rosmarin":{"name":"Rosmarin getrocknet","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"zimt":{"name":"Zimt","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"chiliflocken":{"name":"Chiliflocken","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"vanille":{"name":"Vanilleextrakt","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"italienische_kraeuter":{"name":"Italienische Kräuter","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"garam_masala":{"name":"Garam Masala","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true},"raeucherpaprika":{"name":"Geräuchertes Paprikapulver","kcal":0,"p":0.0,"f":0.0,"kh":0.0,"abt":"Gewürze & Vorrat","pack":50,"packname":"Streuer","stueck":null,"vorrat":true}},"rezepte":[{"id":"f01","name":"Protein-Porridge mit Beeren & Mandeln","typ":"fruehstueck","fisch":false,"zeit":10,"zut":[{"k":"haferflocken","g":90},{"k":"milch","g":300},{"k":"magerquark","g":150},{"k":"beeren_tk","g":120},{"k":"mandeln","g":20},{"k":"leinsamen","g":10},{"k":"honig","g":10},{"k":"zimt","g":1}],"schritte":["Haferflocken mit Milch aufkochen, 3–4 Min bei kleiner Hitze quellen lassen.","Vom Herd nehmen, Quark unterrühren (nicht kochen, sonst flockt er).","Beeren, gehackte Mandeln, Leinsamen und Zimt darüber, mit Honig süßen."],"makro":{"kcal":830,"p":47.6,"f":25.9,"kh":93.3}},{"id":"f02","name":"Overnight Oats Schoko-Banane","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"haferflocken","g":90},{"k":"milch","g":250},{"k":"magerquark","g":150},{"k":"banane","g":120},{"k":"kakao","g":10},{"k":"erdnussbutter","g":20},{"k":"chiasamen","g":10},{"k":"honig","g":10}],"schritte":["Haferflocken, Milch, Quark, Kakao und Chiasamen verrühren, über Nacht in den Kühlschrank.","Morgens Banane in Scheiben und Erdnussmus daraufgeben, mit Honig abschmecken."],"makro":{"kcal":894,"p":48.7,"f":25.1,"kh":109.7}},{"id":"f03","name":"Quark-Bowl mit Heidelbeeren & Walnüssen","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"magerquark","g":300},{"k":"milch","g":80},{"k":"heidelbeeren","g":125},{"k":"haferflocken","g":60},{"k":"walnuesse","g":25},{"k":"honig","g":15},{"k":"zimt","g":1}],"schritte":["Quark mit Milch cremig rühren.","Haferflocken in einer Pfanne ohne Fett 2 Min rösten.","Alles in einer Schale schichten, Heidelbeeren und gehackte Walnüsse darüber."],"makro":{"kcal":742,"p":51.5,"f":22.9,"kh":80.2}},{"id":"f04","name":"Skyr-Bowl mit Mango & Kürbiskernen","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"skyr","g":300},{"k":"mango","g":150},{"k":"haferflocken","g":60},{"k":"kuerbiskerne","g":25},{"k":"kokosraspel","g":10},{"k":"honig","g":10},{"k":"limette","g":15}],"schritte":["Skyr mit etwas Limettensaft glattrühren.","Mango würfeln, Kürbiskerne kurz anrösten.","Skyr in die Schale, Mango, Hafer, Kerne und Kokosraspeln darauf verteilen."],"makro":{"kcal":743,"p":50.5,"f":24.2,"kh":77.3}},{"id":"f05","name":"Rührei mit Spinat, Champignons & Röstkartoffeln","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"babyspinat","g":80},{"k":"champignons","g":150},{"k":"kartoffeln","g":300},{"k":"olivenoel","g":15},{"k":"zwiebel","g":50},{"k":"salz","g":1},{"k":"pfeffer","g":1},{"k":"schnittlauch","g":10}],"schritte":["Kartoffeln würfeln und in der Pfanne mit Öl 12–15 Min goldbraun braten.","Zwiebel und Champignons dazugeben, 4 Min mitbraten.","Spinat zusammenfallen lassen, verquirlte Eier und Eiklar einrühren und stocken lassen.","Mit Salz, Pfeffer und Schnittlauch abschmecken."],"makro":{"kcal":714,"p":46.7,"f":33.7,"kh":52.3}},{"id":"f06","name":"Paprika-Omelette mit Gouda & Kartoffeln","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"paprika","g":150},{"k":"zwiebel","g":50},{"k":"gouda","g":40},{"k":"kartoffeln","g":300},{"k":"rapsoel","g":12},{"k":"paprikapulver","g":2},{"k":"salz","g":1},{"k":"petersilie","g":10}],"schritte":["Kartoffelwürfel in Öl knusprig braten, herausnehmen.","Paprika und Zwiebel 4 Min anbraten.","Eier mit Eiklar verquirlen, über das Gemüse gießen, Käse darüber, bei kleiner Hitze stocken lassen.","Mit Kartoffeln, Paprikapulver und Petersilie servieren."],"makro":{"kcal":836,"p":51.8,"f":41.7,"kh":60.3}},{"id":"f07","name":"Shakshuka mit Kichererbsen","typ":"fruehstueck","fisch":false,"zeit":25,"zut":[{"k":"ei","g":174},{"k":"passierte_tomaten","g":300},{"k":"kichererbsen","g":250},{"k":"paprika","g":120},{"k":"zwiebel","g":70},{"k":"knoblauch","g":8},{"k":"olivenoel","g":15},{"k":"kreuzkuemmel","g":2},{"k":"paprikapulver","g":2},{"k":"feta","g":40},{"k":"petersilie","g":10}],"schritte":["Zwiebel, Knoblauch und Paprika in Olivenöl 5 Min andünsten.","Kichererbsen, passierte Tomaten und Gewürze zugeben, 8 Min einkochen.","Mulden formen, Eier hineingleiten lassen, zugedeckt 6–8 Min stocken lassen.","Feta und Petersilie darüber."],"makro":{"kcal":970,"p":52.7,"f":48.5,"kh":69.2}},{"id":"f08","name":"Süßkartoffel-Rührei-Pfanne","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"suesskartoffel","g":300},{"k":"paprika","g":100},{"k":"fruehlingszwiebel","g":30},{"k":"olivenoel","g":15},{"k":"avocado","g":70},{"k":"raeucherpaprika","g":2},{"k":"salz","g":1}],"schritte":["Süßkartoffelwürfel in Öl 12 Min braten, bis sie weich sind.","Paprika zugeben, 3 Min mitbraten.","Eier und Eiklar verquirlt einrühren, stocken lassen.","Mit Avocadoscheiben, Frühlingszwiebeln und Paprikapulver servieren."],"makro":{"kcal":846,"p":40.9,"f":43.7,"kh":64.5}},{"id":"f09","name":"Apfel-Zimt-Porridge mit Skyr","typ":"fruehstueck","fisch":false,"zeit":12,"zut":[{"k":"haferflocken","g":90},{"k":"milch","g":300},{"k":"apfel","g":150},{"k":"skyr","g":150},{"k":"walnuesse","g":20},{"k":"zimt","g":2},{"k":"honig","g":12},{"k":"leinsamen","g":10}],"schritte":["Apfel würfeln und mit Haferflocken, Milch und Zimt aufkochen, 4 Min quellen lassen.","Vom Herd nehmen und Skyr unterrühren.","Mit Walnüssen, Leinsamen und Honig toppen."],"makro":{"kcal":869,"p":44.1,"f":28.6,"kh":102.9}},{"id":"f10","name":"Chia-Pudding mit Himbeeren & Erdnussmus","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"chiasamen","g":35},{"k":"milch","g":300},{"k":"magerquark","g":200},{"k":"himbeeren","g":125},{"k":"erdnussbutter","g":25},{"k":"haferflocken","g":40},{"k":"honig","g":12},{"k":"vanille","g":1}],"schritte":["Chiasamen mit Milch und Vanille verrühren, mind. 4 h oder über Nacht quellen lassen.","Quark cremig rühren und darüberschichten.","Himbeeren, Haferflocken und Erdnussmus darauf, mit Honig süßen."],"makro":{"kcal":845,"p":53.3,"f":32.1,"kh":68.1}},{"id":"f11","name":"Hüttenkäse-Bowl mit Ananas & Cashews","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"huettenkaese","g":200},{"k":"skyr","g":150},{"k":"ananas","g":180},{"k":"haferflocken","g":60},{"k":"cashews","g":25},{"k":"honig","g":10},{"k":"minze","g":5}],"schritte":["Hüttenkäse und Skyr verrühren.","Ananas würfeln, Cashews grob hacken.","In einer Schale anrichten, Haferflocken darüber, mit Honig und Minze abschließen."],"makro":{"kcal":775,"p":55.2,"f":24.3,"kh":84.6}},{"id":"f12","name":"Protein-Pancakes mit Beeren","typ":"fruehstueck","fisch":false,"zeit":15,"zut":[{"k":"haferflocken","g":80},{"k":"magerquark","g":200},{"k":"ei","g":116},{"k":"eiklar","g":80},{"k":"beeren_tk","g":120},{"k":"kokosoel","g":8},{"k":"honig","g":12},{"k":"zimt","g":1},{"k":"skyr","g":100}],"schritte":["Haferflocken fein mahlen, mit Quark, Ei, Eiklar und Zimt zu einem Teig verrühren.","In Kokosöl portionsweise bei mittlerer Hitze als kleine Pancakes ausbacken.","Mit Skyr, Beeren und Honig servieren."],"makro":{"kcal":861,"p":70.5,"f":26.4,"kh":79.8}},{"id":"f13","name":"Bircher Müsli mit Apfel & Joghurt","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"haferflocken","g":90},{"k":"milch","g":200},{"k":"gr_joghurt","g":200},{"k":"apfel","g":150},{"k":"mandeln","g":25},{"k":"zitrone","g":10},{"k":"honig","g":12},{"k":"leinsamen","g":10}],"schritte":["Haferflocken mit Milch über Nacht einweichen.","Apfel grob raspeln, mit Zitronensaft mischen.","Joghurt, Apfel, Mandeln, Leinsamen und Honig unterheben."],"makro":{"kcal":908,"p":44.6,"f":30.3,"kh":101.2}},{"id":"f14","name":"Rührei mit Räucherlachs & Avocado","typ":"fruehstueck","fisch":true,"zeit":15,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"lachs_raeucher","g":80},{"k":"avocado","g":70},{"k":"kartoffeln","g":280},{"k":"olivenoel","g":15},{"k":"dill","g":10},{"k":"zitrone","g":15},{"k":"pfeffer","g":1}],"schritte":["Kartoffelwürfel in Öl 12–15 Min knusprig braten.","Eier mit Eiklar verquirlen und in der zweiten Pfanne cremig stocken lassen.","Räucherlachs, Avocado und Dill dazu anrichten, mit Zitrone und Pfeffer abschmecken."],"makro":{"kcal":890,"p":57.2,"f":51.4,"kh":45.3}},{"id":"f15","name":"Quinoa-Frühstücksbowl mit Birne & Zimt","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"quinoa","g":80},{"k":"milch","g":250},{"k":"skyr","g":200},{"k":"birne","g":160},{"k":"walnuesse","g":25},{"k":"zimt","g":2},{"k":"ahornsirup","g":15}],"schritte":["Quinoa in Milch 15 Min weich köcheln, gelegentlich rühren.","Abkühlen lassen und Skyr unterrühren.","Birnenspalten, Walnüsse, Zimt und Ahornsirup darauf."],"makro":{"kcal":832,"p":46.1,"f":25.4,"kh":97.7}},{"id":"f16","name":"Protein-Kaiserschmarrn mit Apfelkompott","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"haferflocken","g":70},{"k":"magerquark","g":200},{"k":"ei","g":116},{"k":"eiklar","g":100},{"k":"apfel","g":200},{"k":"butter","g":12},{"k":"zimt","g":2},{"k":"honig","g":15},{"k":"mandeln","g":20}],"schritte":["Apfel würfeln und mit Zimt und 3 EL Wasser 8 Min zu Kompott köcheln.","Gemahlene Haferflocken, Quark, Ei und Eiklar zu einem Teig verrühren.","In Butter ausbacken, mit zwei Gabeln zerreißen und kurz karamellisieren.","Mit Kompott, Mandeln und Honig servieren."],"makro":{"kcal":963,"p":64.0,"f":37.4,"kh":88.8}},{"id":"f17","name":"Grüne Power-Bowl mit Skyr & Banane","typ":"fruehstueck","fisch":false,"zeit":8,"zut":[{"k":"skyr","g":300},{"k":"babyspinat","g":60},{"k":"banane","g":120},{"k":"haferflocken","g":70},{"k":"erdnussbutter","g":25},{"k":"kiwi","g":80},{"k":"leinsamen","g":10},{"k":"honig","g":10}],"schritte":["Spinat mit Banane und etwas Wasser fein pürieren.","Mit Skyr verrühren und in die Schale geben.","Hafer, Kiwischeiben, Erdnussmus und Leinsamen darauf, mit Honig abrunden."],"makro":{"kcal":853,"p":54.5,"f":23.2,"kh":99.0}},{"id":"f18","name":"Beeren-Quark mit Leinsamen & Cashews","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"magerquark","g":300},{"k":"milch","g":80},{"k":"erdbeeren","g":200},{"k":"heidelbeeren","g":100},{"k":"haferflocken","g":60},{"k":"cashews","g":25},{"k":"leinsamen","g":12},{"k":"honig","g":12}],"schritte":["Quark mit Milch glattrühren.","Erdbeeren vierteln, mit Heidelbeeren mischen.","Alles schichten, Hafer, Cashews und Leinsamen darüber."],"makro":{"kcal":822,"p":55.6,"f":23.2,"kh":92.7}},{"id":"f19","name":"Tomaten-Feta-Omelette mit Kartoffeln","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"kirschtomaten","g":150},{"k":"feta","g":50},{"k":"kartoffeln","g":300},{"k":"olivenoel","g":15},{"k":"zwiebel","g":50},{"k":"basilikum","g":10},{"k":"oregano","g":2}],"schritte":["Kartoffelscheiben in Olivenöl 12 Min braten.","Zwiebel und halbierte Kirschtomaten zugeben.","Eiermasse angießen, Feta darüberbröseln und bei kleiner Hitze stocken lassen.","Mit Basilikum und Oregano servieren."],"makro":{"kcal":824,"p":48.2,"f":43.7,"kh":55.6}},{"id":"f20","name":"Schoko-Hafer-Bowl mit Erdnussmus & Banane","typ":"fruehstueck","fisch":false,"zeit":10,"zut":[{"k":"haferflocken","g":90},{"k":"milch","g":300},{"k":"magerquark","g":180},{"k":"kakao","g":12},{"k":"banane","g":120},{"k":"erdnussbutter","g":25},{"k":"zartbitter","g":10},{"k":"honig","g":10}],"schritte":["Haferflocken mit Milch und Kakao aufkochen, 4 Min quellen lassen.","Quark einrühren, sobald die Masse nicht mehr kocht.","Banane, Erdnussmus und gehackte Schokolade darauf."],"makro":{"kcal":982,"p":55.0,"f":30.1,"kh":115.5}},{"id":"f21","name":"Kräuter-Rührei mit Röstkartoffeln & Hüttenkäse","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"ei","g":174},{"k":"eiklar","g":100},{"k":"huettenkaese","g":150},{"k":"kartoffeln","g":320},{"k":"rapsoel","g":15},{"k":"schnittlauch","g":12},{"k":"petersilie","g":10},{"k":"radieschen","g":80},{"k":"salz","g":1},{"k":"pfeffer","g":1}],"schritte":["Kartoffelwürfel in Öl 12–15 Min knusprig braten.","Eier mit Eiklar verquirlen und cremig stocken lassen.","Mit Hüttenkäse, Kräutern und Radieschenscheiben anrichten."],"makro":{"kcal":820,"p":59.7,"f":39.4,"kh":56.5}},{"id":"f22","name":"Joghurt-Bowl mit Ofen-Granola & Erdbeeren","typ":"fruehstueck","fisch":false,"zeit":15,"zut":[{"k":"gr_joghurt","g":250},{"k":"skyr","g":150},{"k":"haferflocken","g":70},{"k":"mandeln","g":20},{"k":"sonnenblumenkerne","g":15},{"k":"honig","g":15},{"k":"erdbeeren","g":200},{"k":"kokosoel","g":8}],"schritte":["Haferflocken, Mandeln und Kerne mit Kokosöl und Honig mischen, 10 Min bei 170 °C rösten.","Joghurt und Skyr verrühren.","Granola und Erdbeeren darüber."],"makro":{"kcal":944,"p":57.2,"f":36.4,"kh":84.8}},{"id":"f23","name":"Süßkartoffel-Porridge mit Walnüssen","typ":"fruehstueck","fisch":false,"zeit":25,"zut":[{"k":"suesskartoffel","g":250},{"k":"haferflocken","g":60},{"k":"milch","g":250},{"k":"magerquark","g":150},{"k":"walnuesse","g":25},{"k":"zimt","g":2},{"k":"ahornsirup","g":15},{"k":"apfel","g":100}],"schritte":["Süßkartoffel weich kochen und zerdrücken.","Mit Haferflocken, Milch und Zimt 5 Min köcheln.","Quark unterrühren, Apfelwürfel, Walnüsse und Ahornsirup darauf."],"makro":{"kcal":911,"p":42.6,"f":25.1,"kh":122.3}},{"id":"f24","name":"Hüttenkäse-Kartoffel-Pfanne mit Schnittlauch","typ":"fruehstueck","fisch":false,"zeit":20,"zut":[{"k":"kartoffeln","g":350},{"k":"huettenkaese","g":200},{"k":"ei","g":116},{"k":"lauch","g":80},{"k":"olivenoel","g":15},{"k":"schnittlauch","g":12},{"k":"kuerbiskerne","g":20},{"k":"salz","g":1},{"k":"pfeffer","g":1},{"k":"gurke","g":100}],"schritte":["Kartoffelscheiben in Öl goldbraun braten, Lauchringe zugeben.","Eier verquirlt untermischen und stocken lassen.","Vom Herd nehmen, Hüttenkäse, Kürbiskerne und Schnittlauch darauf, Gurkenscheiben dazu."],"makro":{"kcal":893,"p":55.3,"f":45.8,"kh":65.1}},{"id":"f25","name":"Thunfisch-Kartoffelpfanne mit Ei","typ":"fruehstueck","fisch":true,"zeit":20,"zut":[{"k":"thunfisch","g":104},{"k":"ei","g":174},{"k":"kartoffeln","g":320},{"k":"paprika","g":120},{"k":"zwiebel","g":60},{"k":"olivenoel","g":15},{"k":"petersilie","g":10},{"k":"zitrone","g":15},{"k":"chiliflocken","g":1}],"schritte":["Kartoffelwürfel in Öl 12 Min braten.","Zwiebel und Paprika zugeben, 4 Min mitbraten.","Thunfisch unterheben, Eier darübergießen und stocken lassen.","Mit Zitrone, Petersilie und Chiliflocken abschmecken."],"makro":{"kcal":795,"p":56.0,"f":34.3,"kh":61.8}},{"id":"f26","name":"Kokos-Chia-Bowl mit Mango","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"chiasamen","g":35},{"k":"kokosmilch","g":120},{"k":"milch","g":180},{"k":"skyr","g":250},{"k":"mango","g":180},{"k":"kokosraspel","g":12},{"k":"cashews","g":20},{"k":"honig","g":12},{"k":"limette","g":15}],"schritte":["Chiasamen mit Kokosmilch und Milch verrühren, über Nacht quellen lassen.","Skyr mit Limettensaft glattrühren und darüberschichten.","Mangowürfel, Kokosraspeln und Cashews darauf."],"makro":{"kcal":979,"p":47.9,"f":54.2,"kh":65.8}},{"id":"f27","name":"Polenta-Porridge mit Beeren & Erdnussmus","typ":"fruehstueck","fisch":false,"zeit":15,"zut":[{"k":"polenta","g":70},{"k":"milch","g":320},{"k":"magerquark","g":180},{"k":"beeren_tk","g":130},{"k":"erdnussbutter","g":25},{"k":"honig","g":12},{"k":"zimt","g":1},{"k":"mandeln","g":15}],"schritte":["Polenta in die kochende Milch einrühren, 8 Min bei kleiner Hitze quellen lassen.","Vom Herd nehmen, Quark unterrühren.","Beeren, Erdnussmus, Mandeln und Honig darauf."],"makro":{"kcal":853,"p":48.8,"f":26.9,"kh":100.7}},{"id":"f28","name":"Ofen-Omelette mit Brokkoli & Parmesan","typ":"fruehstueck","fisch":false,"zeit":30,"zut":[{"k":"ei","g":232},{"k":"eiklar","g":100},{"k":"brokkoli","g":200},{"k":"kartoffeln","g":280},{"k":"parmesan","g":35},{"k":"milch","g":60},{"k":"olivenoel","g":12},{"k":"pfeffer","g":1},{"k":"kirschtomaten","g":100}],"schritte":["Brokkoli 4 Min blanchieren, Kartoffelscheiben 8 Min vorkochen.","Beides in eine geölte Auflaufform schichten, Kirschtomaten dazu.","Eier, Eiklar, Milch und Parmesan verquirlen, angießen.","25 Min bei 180 °C backen."],"makro":{"kcal":937,"p":69.0,"f":47.1,"kh":55.7}},{"id":"f29","name":"Skyr mit Trauben, Kiwi & Sonnenblumenkernen","typ":"fruehstueck","fisch":false,"zeit":5,"zut":[{"k":"skyr","g":300},{"k":"magerquark","g":100},{"k":"trauben","g":150},{"k":"kiwi","g":160},{"k":"haferflocken","g":60},{"k":"sonnenblumenkerne","g":25},{"k":"honig","g":12},{"k":"leinsamen","g":10}],"schritte":["Skyr und Quark verrühren.","Trauben halbieren, Kiwi würfeln.","Alles anrichten, Hafer, Kerne und Leinsamen darüber, mit Honig süßen."],"makro":{"kcal":916,"p":63.0,"f":23.1,"kh":105.6}},{"id":"f30","name":"Zucchini-Puffer mit Quarkdip","typ":"fruehstueck","fisch":false,"zeit":25,"zut":[{"k":"zucchini","g":300},{"k":"ei","g":174},{"k":"haferflocken","g":70},{"k":"magerquark","g":250},{"k":"olivenoel","g":18},{"k":"knoblauch","g":6},{"k":"dill","g":10},{"k":"zitrone","g":15},{"k":"kartoffeln","g":200},{"k":"salz","g":1}],"schritte":["Zucchini und Kartoffeln grob raspeln, gut ausdrücken.","Mit Eiern, gemahlenen Haferflocken und Salz vermengen.","Puffer in Öl von beiden Seiten 3–4 Min goldbraun braten.","Quark mit Knoblauch, Dill und Zitrone zum Dip verrühren."],"makro":{"kcal":1050,"p":71.0,"f":42.5,"kh":91.2}},{"id":"h01","name":"Hähnchen-Reispfanne mit Brokkoli & Sesam","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"haehnchenbrust","g":200},{"k":"basmatireis","g":120},{"k":"brokkoli","g":200},{"k":"paprika","g":120},{"k":"zwiebel","g":60},{"k":"rapsoel","g":18},{"k":"sojasauce","g":20},{"k":"sesam","g":12},{"k":"knoblauch","g":8},{"k":"ingwer","g":8},{"k":"chiliflocken","g":1}],"schritte":["Reis nach Packung garen.","Hähnchen in Streifen scharf anbraten, herausnehmen.","Knoblauch, Ingwer, Zwiebel, Paprika und Brokkoli 5 Min pfannenrühren.","Hähnchen und Reis zurück in die Pfanne, mit Sojasauce ablöschen, Sesam darüber."],"makro":{"kcal":1022,"p":69.0,"f":29.2,"kh":115.6}},{"id":"h02","name":"Hähnchen-Curry mit Kokosmilch & Süßkartoffel","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"haehnchenbrust","g":200},{"k":"suesskartoffel","g":250},{"k":"kokosmilch","g":120},{"k":"basmatireis","g":90},{"k":"babyspinat","g":80},{"k":"zwiebel","g":70},{"k":"currypaste","g":25},{"k":"knoblauch","g":8},{"k":"rapsoel","g":12},{"k":"limette","g":15},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel und Knoblauch in Öl andünsten, Currypaste 1 Min mitrösten.","Hähnchenwürfel und Süßkartoffelwürfel zugeben, mit Kokosmilch und 150 ml Wasser aufgießen.","15 Min köcheln, Spinat unterheben, mit Limette und Koriander abschmecken."],"makro":{"kcal":1163,"p":63.9,"f":40.3,"kh":128.9}},{"id":"h03","name":"Hähnchenbrust mit Ofengemüse & Kartoffeln","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"haehnchenbrust","g":220},{"k":"kartoffeln","g":350},{"k":"zucchini","g":150},{"k":"paprika","g":150},{"k":"rote_zwiebel","g":80},{"k":"olivenoel","g":20},{"k":"rosmarin","g":2},{"k":"knoblauch","g":8},{"k":"zitrone","g":20},{"k":"salz","g":1},{"k":"pfeffer","g":1}],"schritte":["Kartoffeln und Gemüse in Spalten schneiden, mit Öl, Knoblauch und Rosmarin mischen.","25 Min bei 200 °C backen.","Hähnchenbrust nach 10 Min dazulegen und mitgaren.","Mit Zitrone, Salz und Pfeffer abschmecken."],"makro":{"kcal":786,"p":63.5,"f":24.7,"kh":73.8}},{"id":"h04","name":"Hähnchen-Quinoa-Bowl mit Avocado","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"haehnchenbrust","g":200},{"k":"quinoa","g":90},{"k":"avocado","g":70},{"k":"kirschtomaten","g":150},{"k":"gurke","g":100},{"k":"rucola","g":40},{"k":"olivenoel","g":15},{"k":"zitrone","g":20},{"k":"kuerbiskerne","g":20},{"k":"salz","g":1},{"k":"paprikapulver","g":2}],"schritte":["Quinoa 15 Min garen und abkühlen lassen.","Hähnchen mit Paprikapulver würzen und braten, in Streifen schneiden.","Quinoa, Tomaten, Gurke und Rucola mischen.","Mit Olivenöl-Zitronen-Dressing, Avocado und Kürbiskernen anrichten."],"makro":{"kcal":958,"p":69.2,"f":44.1,"kh":61.8}},{"id":"h05","name":"Hähnchen-Nudeln in Tomatensauce mit Basilikum","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"haehnchenbrust","g":200},{"k":"vk_nudeln","g":110},{"k":"passierte_tomaten","g":250},{"k":"zwiebel","g":70},{"k":"knoblauch","g":8},{"k":"olivenoel","g":15},{"k":"parmesan","g":30},{"k":"basilikum","g":12},{"k":"oregano","g":2},{"k":"kirschtomaten","g":100}],"schritte":["Nudeln al dente kochen.","Hähnchenwürfel anbraten, herausnehmen.","Zwiebel und Knoblauch andünsten, passierte Tomaten und Oregano zugeben, 8 Min einkochen.","Hähnchen, Kirschtomaten und Nudeln untermischen, mit Parmesan und Basilikum servieren."],"makro":{"kcal":980,"p":78.5,"f":30.0,"kh":88.9}},{"id":"h06","name":"Hähnchen-Gyros-Pfanne mit Tzatziki-Quark","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"haehnchenbrust","g":210},{"k":"kartoffeln","g":330},{"k":"paprika","g":130},{"k":"rote_zwiebel","g":80},{"k":"magerquark","g":150},{"k":"gurke","g":100},{"k":"olivenoel","g":18},{"k":"knoblauch","g":8},{"k":"paprikapulver","g":3},{"k":"oregano","g":2},{"k":"zitrone","g":15}],"schritte":["Kartoffelspalten mit etwas Öl 25 Min bei 200 °C backen.","Hähnchenstreifen mit Paprikapulver und Oregano marinieren, scharf anbraten.","Paprika und Zwiebel mitbraten.","Quark mit geraspelter Gurke, Knoblauch und Zitrone zum Tzatziki verrühren."],"makro":{"kcal":822,"p":76.7,"f":22.5,"kh":74.1}},{"id":"h07","name":"Asia-Hähnchen-Bulgur-Bowl","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"haehnchenbrust","g":200},{"k":"bulgur","g":100},{"k":"paprika","g":130},{"k":"karotten","g":100},{"k":"weisskohl","g":100},{"k":"fruehlingszwiebel","g":30},{"k":"sojasauce","g":22},{"k":"sesam","g":12},{"k":"rapsoel","g":15},{"k":"ingwer","g":8},{"k":"limette","g":15}],"schritte":["Bulgur mit kochendem Wasser 12 Min quellen lassen.","Hähnchenstreifen scharf anbraten.","Gemüse in feine Streifen schneiden, 4 Min bei hoher Hitze pfannenrühren.","Alles mischen, mit Sojasauce, Ingwer, Limette und Sesam abschmecken."],"makro":{"kcal":900,"p":66.3,"f":26.0,"kh":88.0}},{"id":"h08","name":"Hähnchen-Süßkartoffel-Auflauf mit Spinat","typ":"haupt","fisch":false,"zeit":40,"zut":[{"k":"haehnchenbrust","g":210},{"k":"suesskartoffel","g":300},{"k":"spinat_tk","g":150},{"k":"frischkaese","g":80},{"k":"milch","g":100},{"k":"gouda","g":40},{"k":"zwiebel","g":70},{"k":"knoblauch","g":8},{"k":"olivenoel","g":12},{"k":"pfeffer","g":1}],"schritte":["Süßkartoffelscheiben 8 Min vorkochen.","Hähnchenwürfel anbraten, Zwiebel und Knoblauch zugeben.","Spinat, Frischkäse und Milch zu einer Sauce verrühren.","In der Form schichten, Käse darüber, 25 Min bei 190 °C backen."],"makro":{"kcal":955,"p":81.1,"f":34.9,"kh":70.3}},{"id":"h09","name":"Hähnchen-Couscous-Salat mit Minze","typ":"haupt","fisch":false,"zeit":20,"zut":[{"k":"haehnchenbrust","g":200},{"k":"couscous","g":100},{"k":"kirschtomaten","g":150},{"k":"gurke","g":120},{"k":"rote_zwiebel","g":50},{"k":"petersilie","g":15},{"k":"minze","g":8},{"k":"olivenoel","g":18},{"k":"zitrone","g":25},{"k":"trauben","g":100},{"k":"kreuzkuemmel","g":2}],"schritte":["Couscous mit kochender Brühe übergießen und 8 Min quellen lassen.","Hähnchen mit Kreuzkümmel würzen, braten und in Streifen schneiden.","Gemüse und Kräuter klein schneiden, mit Couscous mischen.","Mit Öl-Zitronen-Dressing, Trauben und Hähnchen anrichten."],"makro":{"kcal":874,"p":62.6,"f":23.1,"kh":97.8}},{"id":"h10","name":"Hähnchen-Champignon-Rahm mit Vollkornnudeln","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"haehnchenbrust","g":200},{"k":"vk_nudeln","g":110},{"k":"champignons","g":200},{"k":"frischkaese","g":70},{"k":"milch","g":120},{"k":"zwiebel","g":70},{"k":"olivenoel","g":15},{"k":"petersilie","g":12},{"k":"knoblauch","g":8},{"k":"pfeffer","g":1},{"k":"parmesan","g":20}],"schritte":["Nudeln kochen.","Hähnchenstreifen anbraten, herausnehmen.","Champignons, Zwiebel und Knoblauch scharf anbraten, bis die Flüssigkeit verdampft ist.","Frischkäse und Milch einrühren, Hähnchen zurückgeben, mit Nudeln, Parmesan und Petersilie servieren."],"makro":{"kcal":1032,"p":88.2,"f":34.2,"kh":83.0}},{"id":"h11","name":"Puten-Gemüsepfanne mit Reis","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"putenbrust","g":210},{"k":"basmatireis","g":115},{"k":"zucchini","g":150},{"k":"paprika","g":130},{"k":"erbsen","g":100},{"k":"zwiebel","g":60},{"k":"rapsoel","g":18},{"k":"knoblauch","g":8},{"k":"paprikapulver","g":3},{"k":"petersilie","g":12},{"k":"bruehe","g":3}],"schritte":["Reis garen.","Putenstreifen scharf anbraten, herausnehmen.","Zwiebel, Zucchini, Paprika und Erbsen 6 Min braten.","Alles mischen, mit Paprikapulver, Brühe und Petersilie abschmecken."],"makro":{"kcal":981,"p":70.1,"f":22.9,"kh":118.0}},{"id":"h12","name":"Putenhack-Bolognese mit Vollkornnudeln","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"putenhack","g":200},{"k":"vk_nudeln","g":110},{"k":"passierte_tomaten","g":250},{"k":"karotten","g":100},{"k":"sellerie","g":80},{"k":"zwiebel","g":70},{"k":"knoblauch","g":8},{"k":"olivenoel","g":15},{"k":"tomatenmark","g":25},{"k":"parmesan","g":30},{"k":"italienische_kraeuter","g":3}],"schritte":["Karotte, Sellerie und Zwiebel fein würfeln und in Öl 5 Min andünsten.","Hack zugeben und krümelig braten, Tomatenmark 1 Min mitrösten.","Passierte Tomaten und Kräuter zugeben, 15 Min köcheln.","Mit Nudeln und Parmesan servieren."],"makro":{"kcal":1116,"p":73.9,"f":41.6,"kh":97.7}},{"id":"h13","name":"Puten-Paprika-Gulasch mit Kartoffeln","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"putenbrust","g":220},{"k":"kartoffeln","g":330},{"k":"paprika","g":180},{"k":"zwiebel","g":90},{"k":"passierte_tomaten","g":150},{"k":"schmand","g":40},{"k":"rapsoel","g":15},{"k":"paprikapulver","g":4},{"k":"knoblauch","g":8},{"k":"bruehe","g":4},{"k":"petersilie","g":10}],"schritte":["Putenwürfel anbraten, Zwiebel und Paprika zugeben.","Paprikapulver kurz mitrösten, mit Tomaten und 200 ml Brühe aufgießen.","Kartoffelwürfel zugeben und 20 Min köcheln.","Mit Schmand verfeinern und Petersilie bestreuen."],"makro":{"kcal":857,"p":67.0,"f":28.6,"kh":78.6}},{"id":"h14","name":"Puten-Salatwraps mit Reis & Joghurtsauce","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"putenbrust","g":210},{"k":"basmatireis","g":110},{"k":"eisbergsalat","g":150},{"k":"kirschtomaten","g":120},{"k":"gr_joghurt","g":120},{"k":"mais","g":80},{"k":"rapsoel","g":15},{"k":"limette","g":20},{"k":"kreuzkuemmel","g":2},{"k":"chiliflocken","g":1}],"schritte":["Reis garen und abkühlen lassen.","Putenstreifen mit Kreuzkümmel und Chili würzen und braten.","Joghurt mit Limette zu einer Sauce verrühren.","Reis, Pute, Tomaten und Mais in große Salatblätter füllen und mit Sauce beträufeln."],"makro":{"kcal":955,"p":74.3,"f":22.0,"kh":108.7}},{"id":"h15","name":"Puten-Erbsen-Risotto","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"putenbrust","g":200},{"k":"basmatireis","g":120},{"k":"erbsen","g":130},{"k":"zwiebel","g":70},{"k":"parmesan","g":35},{"k":"olivenoel","g":18},{"k":"bruehe","g":5},{"k":"knoblauch","g":8},{"k":"zitrone","g":15},{"k":"petersilie","g":12},{"k":"pfeffer","g":1}],"schritte":["Zwiebel und Knoblauch in Öl andünsten, Reis kurz mitrösten.","Nach und nach heiße Brühe angießen und 18 Min unter Rühren garen.","Putenwürfel separat anbraten, mit den Erbsen in den letzten 5 Min untermischen.","Parmesan, Zitrone und Petersilie einrühren."],"makro":{"kcal":1083,"p":78.6,"f":31.7,"kh":114.7}},{"id":"h16","name":"Rinderhack-Chili mit Kidneybohnen & Reis","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"rinderhack","g":200},{"k":"kidneybohnen","g":250},{"k":"passierte_tomaten","g":250},{"k":"basmatireis","g":100},{"k":"paprika","g":130},{"k":"zwiebel","g":80},{"k":"mais","g":80},{"k":"olivenoel","g":15},{"k":"kreuzkuemmel","g":3},{"k":"raeucherpaprika","g":3},{"k":"knoblauch","g":8}],"schritte":["Reis garen.","Hack krümelig anbraten, Zwiebel, Knoblauch und Paprika zugeben.","Gewürze mitrösten, Tomaten, Bohnen und Mais zugeben.","20 Min köcheln lassen und mit Reis servieren."],"makro":{"kcal":1251,"p":78.6,"f":29.6,"kh":150.2}},{"id":"h17","name":"Rinderhüftsteak mit Ofenkartoffeln & grünen Bohnen","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"rindersteak","g":200},{"k":"kartoffeln","g":350},{"k":"gruene_bohnen","g":200},{"k":"olivenoel","g":20},{"k":"butter","g":10},{"k":"knoblauch","g":8},{"k":"rosmarin","g":2},{"k":"kirschtomaten","g":100},{"k":"salz","g":1},{"k":"pfeffer","g":1},{"k":"petersilie","g":10}],"schritte":["Kartoffelspalten mit Öl und Rosmarin 30 Min bei 200 °C backen.","Bohnen 8 Min dämpfen, in Butter und Knoblauch schwenken.","Steak 2–3 Min pro Seite braten, 5 Min ruhen lassen.","Mit Kirschtomaten und Petersilie anrichten."],"makro":{"kcal":854,"p":56.7,"f":38.2,"kh":68.1}},{"id":"h18","name":"Rinderhack-Zucchini-Auflauf mit Feta","typ":"haupt","fisch":false,"zeit":40,"zut":[{"k":"rinderhack","g":200},{"k":"zucchini","g":250},{"k":"kartoffeln","g":280},{"k":"passierte_tomaten","g":200},{"k":"feta","g":50},{"k":"zwiebel","g":70},{"k":"olivenoel","g":15},{"k":"knoblauch","g":8},{"k":"oregano","g":3},{"k":"ei","g":58},{"k":"pfeffer","g":1}],"schritte":["Kartoffel- und Zucchinischeiben kurz vorgaren.","Hack mit Zwiebel und Knoblauch anbraten, Tomaten und Oregano zugeben.","Abwechselnd in die Form schichten, verquirltes Ei angießen.","Feta darüberbröseln und 25 Min bei 190 °C backen."],"makro":{"kcal":958,"p":71.2,"f":43.3,"kh":65.5}},{"id":"h19","name":"Rinderhack-Kartoffelpfanne mit Rosenkohl","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"rinderhack","g":200},{"k":"kartoffeln","g":330},{"k":"rosenkohl","g":200},{"k":"zwiebel","g":70},{"k":"rapsoel","g":18},{"k":"senf","g":12},{"k":"bruehe","g":4},{"k":"knoblauch","g":8},{"k":"thymian","g":2},{"k":"petersilie","g":10},{"k":"pfeffer","g":1}],"schritte":["Kartoffelwürfel in Öl 12 Min braten.","Halbierten Rosenkohl zugeben und 6 Min mitbraten.","Hack und Zwiebel krümelig anbraten, alles vermengen.","Mit Senf, Brühe, Thymian und Petersilie abschmecken."],"makro":{"kcal":794,"p":58.6,"f":29.6,"kh":64.4}},{"id":"h20","name":"Asia-Rindfleisch-Nudeln mit Brokkoli","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"rindersteak","g":200},{"k":"nudeln","g":110},{"k":"brokkoli","g":200},{"k":"paprika","g":120},{"k":"karotten","g":80},{"k":"sojasauce","g":25},{"k":"sesam","g":12},{"k":"rapsoel","g":18},{"k":"ingwer","g":10},{"k":"knoblauch","g":8},{"k":"chiliflocken","g":1}],"schritte":["Nudeln kochen.","Rindfleischstreifen bei sehr hoher Hitze 2 Min anbraten, herausnehmen.","Brokkoli, Paprika und Karotte 5 Min pfannenrühren, Ingwer und Knoblauch zugeben.","Alles mit Sojasauce vermengen, Sesam darüber."],"makro":{"kcal":1051,"p":71.7,"f":36.2,"kh":102.1}},{"id":"h21","name":"Rinderhack-Bowl mit Bulgur & Joghurtsauce","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"rinderhack","g":200},{"k":"bulgur","g":100},{"k":"kirschtomaten","g":150},{"k":"gurke","g":120},{"k":"gr_joghurt","g":120},{"k":"rote_zwiebel","g":50},{"k":"olivenoel","g":15},{"k":"kreuzkuemmel","g":3},{"k":"petersilie","g":15},{"k":"zitrone","g":20},{"k":"knoblauch","g":6}],"schritte":["Bulgur 12 Min quellen lassen.","Hack mit Kreuzkümmel und Zwiebel krümelig braten.","Joghurt mit Knoblauch und Zitrone verrühren.","Bulgur, Hack, Tomaten und Gurke in der Schale anrichten, Sauce und Petersilie darüber."],"makro":{"kcal":928,"p":69.7,"f":29.5,"kh":80.9}},{"id":"h22","name":"Schweinefilet mit Kürbis-Ofengemüse","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"schweinefilet","g":220},{"k":"kuerbis","g":250},{"k":"kartoffeln","g":280},{"k":"rote_zwiebel","g":80},{"k":"olivenoel","g":20},{"k":"rosmarin","g":2},{"k":"senf","g":12},{"k":"knoblauch","g":8},{"k":"kuerbiskerne","g":20},{"k":"feldsalat","g":60},{"k":"balsamico","g":15}],"schritte":["Kürbis-, Kartoffel- und Zwiebelspalten mit Öl und Rosmarin 30 Min bei 200 °C backen.","Schweinefilet rundum anbraten und 12 Min bei 160 °C nachziehen lassen.","Feldsalat mit Balsamico anmachen.","Filet aufschneiden, mit Senf, Kürbiskernen und Salat servieren."],"makro":{"kcal":961,"p":67.3,"f":36.6,"kh":81.8}},{"id":"h23","name":"Schweinefilet-Reispfanne mit Lauch & Karotten","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"schweinefilet","g":210},{"k":"basmatireis","g":115},{"k":"lauch","g":120},{"k":"karotten","g":120},{"k":"erbsen","g":80},{"k":"rapsoel","g":18},{"k":"sojasauce","g":20},{"k":"bruehe","g":3},{"k":"knoblauch","g":8},{"k":"pfeffer","g":1},{"k":"fruehlingszwiebel","g":25}],"schritte":["Reis garen.","Filetstreifen scharf anbraten, herausnehmen.","Lauch, Karotten und Erbsen 6 Min braten.","Alles mit Reis vermengen, mit Sojasauce und Brühe abschmecken, Frühlingszwiebeln darüber."],"makro":{"kcal":971,"p":65.3,"f":24.2,"kh":114.2}},{"id":"h24","name":"Schweinefilet mit Senfsauce, Polenta & Spargel","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"schweinefilet","g":220},{"k":"polenta","g":90},{"k":"spargel","g":200},{"k":"milch","g":200},{"k":"senf","g":18},{"k":"schmand","g":40},{"k":"olivenoel","g":15},{"k":"parmesan","g":25},{"k":"bruehe","g":4},{"k":"schnittlauch","g":12},{"k":"pfeffer","g":1}],"schritte":["Polenta in Milch und Brühe 8 Min quellen lassen, Parmesan einrühren.","Spargel in Öl 6 Min braten.","Filetmedaillons 3 Min pro Seite braten, herausnehmen.","Bratensatz mit Senf und Schmand zu einer Sauce verrühren, Schnittlauch darüber."],"makro":{"kcal":1042,"p":78.1,"f":41.6,"kh":84.3}},{"id":"h25","name":"Hähnchenschenkel mit Ofengemüse","typ":"haupt","fisch":false,"zeit":45,"zut":[{"k":"haehnchenschenkel","g":230},{"k":"kartoffeln","g":330},{"k":"karotten","g":150},{"k":"zwiebel","g":80},{"k":"olivenoel","g":18},{"k":"thymian","g":3},{"k":"knoblauch","g":10},{"k":"zitrone","g":25},{"k":"gruene_bohnen","g":150},{"k":"salz","g":1},{"k":"pfeffer","g":1}],"schritte":["Kartoffeln, Karotten und Zwiebeln mit Öl, Knoblauch und Thymian in die Form geben.","Hähnchenschenkel daraufsetzen und 40 Min bei 200 °C backen.","Bohnen in den letzten 12 Min mitgaren.","Mit Zitrone beträufeln."],"makro":{"kcal":885,"p":56.3,"f":36.5,"kh":76.6}},{"id":"h26","name":"Hähnchen-Kürbis-Curry mit Reis","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"haehnchenbrust","g":200},{"k":"kuerbis","g":250},{"k":"kokosmilch","g":110},{"k":"basmatireis","g":95},{"k":"zwiebel","g":70},{"k":"currypaste","g":22},{"k":"babyspinat","g":60},{"k":"rapsoel","g":12},{"k":"ingwer","g":10},{"k":"limette","g":15},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Ingwer und Currypaste in Öl anrösten.","Hähnchen und Kürbiswürfel zugeben, mit Kokosmilch und 150 ml Wasser auffüllen.","15 Min köcheln, Spinat unterheben, mit Limette und Koriander abschmecken."],"makro":{"kcal":1094,"p":63.3,"f":39.2,"kh":113.7}},{"id":"h27","name":"Hack-Kartoffel-Auflauf mit Brokkoli","typ":"haupt","fisch":false,"zeit":45,"zut":[{"k":"rinderhack","g":200},{"k":"kartoffeln","g":330},{"k":"brokkoli","g":200},{"k":"milch","g":150},{"k":"frischkaese","g":70},{"k":"gouda","g":40},{"k":"zwiebel","g":70},{"k":"olivenoel","g":12},{"k":"knoblauch","g":8},{"k":"pfeffer","g":1},{"k":"petersilie","g":10}],"schritte":["Kartoffelscheiben 8 Min vorkochen, Brokkoli 4 Min blanchieren.","Hack mit Zwiebel und Knoblauch anbraten.","Milch und Frischkäse zu einer Sauce verrühren.","Alles schichten, Käse darüber, 25 Min bei 190 °C backen."],"makro":{"kcal":1019,"p":81.8,"f":42.4,"kh":72.1}},{"id":"h28","name":"Hähnchen-Bohnen-Eintopf mit Kartoffeln","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"haehnchenbrust","g":210},{"k":"kartoffeln","g":300},{"k":"gruene_bohnen","g":200},{"k":"karotten","g":120},{"k":"passierte_tomaten","g":150},{"k":"zwiebel","g":70},{"k":"olivenoel","g":15},{"k":"bruehe","g":5},{"k":"thymian","g":2},{"k":"knoblauch","g":8},{"k":"petersilie","g":12}],"schritte":["Zwiebel und Knoblauch andünsten, Hähnchenwürfel anbraten.","Kartoffeln, Karotten, Tomaten und 400 ml Brühe zugeben.","20 Min köcheln, Bohnen in den letzten 10 Min zugeben.","Mit Thymian und Petersilie abschmecken."],"makro":{"kcal":767,"p":63.3,"f":19.3,"kh":78.4}},{"id":"h29","name":"Putenbrust-Nudelpfanne mit Spinat & Frischkäse","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"putenbrust","g":210},{"k":"vk_nudeln","g":110},{"k":"spinat_tk","g":180},{"k":"frischkaese","g":80},{"k":"milch","g":100},{"k":"zwiebel","g":60},{"k":"olivenoel","g":15},{"k":"knoblauch","g":8},{"k":"parmesan","g":25},{"k":"pfeffer","g":1},{"k":"kirschtomaten","g":100}],"schritte":["Nudeln kochen.","Putenstreifen anbraten, Zwiebel und Knoblauch zugeben.","Spinat auftauen lassen, mit Frischkäse und Milch cremig rühren.","Nudeln und Kirschtomaten untermischen, Parmesan darüber."],"makro":{"kcal":1078,"p":94.5,"f":35.8,"kh":84.9}},{"id":"h30","name":"Gefüllte Paprika mit Rinderhack & Reis","typ":"haupt","fisch":false,"zeit":45,"zut":[{"k":"rinderhack","g":200},{"k":"paprika","g":340},{"k":"basmatireis","g":90},{"k":"passierte_tomaten","g":200},{"k":"zwiebel","g":70},{"k":"gouda","g":35},{"k":"olivenoel","g":15},{"k":"knoblauch","g":8},{"k":"paprikapulver","g":3},{"k":"petersilie","g":12},{"k":"bruehe","g":3}],"schritte":["Reis halbgar kochen.","Hack mit Zwiebel und Knoblauch anbraten, mit Reis und Gewürzen mischen.","Paprika halbieren, füllen, in die Form setzen und Tomatensauce angießen.","Käse darüber, 30 Min bei 190 °C backen."],"makro":{"kcal":1073,"p":67.4,"f":37.8,"kh":108.6}},{"id":"h31","name":"Lachsfilet mit Ofengemüse & Kartoffeln","typ":"haupt","fisch":true,"zeit":35,"zut":[{"k":"lachs","g":180},{"k":"kartoffeln","g":330},{"k":"zucchini","g":150},{"k":"paprika","g":130},{"k":"rote_zwiebel","g":70},{"k":"olivenoel","g":18},{"k":"zitrone","g":25},{"k":"dill","g":10},{"k":"knoblauch","g":8},{"k":"salz","g":1},{"k":"pfeffer","g":1}],"schritte":["Kartoffel- und Gemüsespalten mit Öl und Knoblauch 25 Min bei 200 °C backen.","Lachs mit Zitrone und Salz würzen und in den letzten 12 Min mitgaren.","Mit Dill und Pfeffer servieren."],"makro":{"kcal":892,"p":48.5,"f":43.2,"kh":69.2}},{"id":"h32","name":"Lachs-Quinoa-Bowl mit Avocado & Spinat","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"lachs","g":170},{"k":"quinoa","g":90},{"k":"babyspinat","g":70},{"k":"avocado","g":70},{"k":"kirschtomaten","g":150},{"k":"gurke","g":100},{"k":"olivenoel","g":15},{"k":"zitrone","g":25},{"k":"sesam","g":12},{"k":"sojasauce","g":15},{"k":"chiliflocken","g":1}],"schritte":["Quinoa 15 Min garen.","Lachs in der Pfanne 3 Min pro Seite braten und grob zerteilen.","Quinoa, Spinat, Tomaten und Gurke mischen.","Mit Öl-Zitronen-Sojasauce-Dressing, Avocado und Sesam anrichten."],"makro":{"kcal":1074,"p":55.5,"f":59.9,"kh":63.0}},{"id":"h33","name":"Zitronen-Lachs-Nudeln mit Brokkoli","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"lachs","g":170},{"k":"vk_nudeln","g":110},{"k":"brokkoli","g":200},{"k":"frischkaese","g":70},{"k":"milch","g":100},{"k":"zitrone","g":30},{"k":"knoblauch","g":8},{"k":"olivenoel","g":15},{"k":"dill","g":10},{"k":"parmesan","g":25},{"k":"pfeffer","g":1}],"schritte":["Nudeln kochen, Brokkoli die letzten 4 Min mitgaren.","Lachswürfel in Öl mit Knoblauch 4 Min braten.","Frischkäse, Milch und Zitronenabrieb zu einer Sauce verrühren.","Alles vermengen, mit Dill, Parmesan und Pfeffer abschmecken."],"makro":{"kcal":1190,"p":78.3,"f":55.0,"kh":82.1}},{"id":"h34","name":"Kabeljau in Tomatensugo mit Polenta","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"kabeljau","g":220},{"k":"polenta","g":90},{"k":"passierte_tomaten","g":250},{"k":"kirschtomaten","g":120},{"k":"zwiebel","g":70},{"k":"knoblauch","g":8},{"k":"olivenoel","g":18},{"k":"milch","g":180},{"k":"parmesan","g":25},{"k":"basilikum","g":12},{"k":"oregano","g":2}],"schritte":["Polenta in Milch und Wasser 8 Min quellen lassen, Parmesan einrühren.","Zwiebel und Knoblauch andünsten, Tomaten und Oregano 10 Min einkochen.","Kabeljaufilet in die Sauce legen und 8 Min ziehen lassen.","Mit Basilikum servieren."],"makro":{"kcal":994,"p":68.4,"f":31.9,"kh":100.7}},{"id":"h35","name":"Kabeljau-Kartoffel-Gratin mit Spinat","typ":"haupt","fisch":true,"zeit":45,"zut":[{"k":"kabeljau","g":220},{"k":"kartoffeln","g":330},{"k":"spinat_tk","g":180},{"k":"milch","g":180},{"k":"frischkaese","g":70},{"k":"gouda","g":40},{"k":"zwiebel","g":60},{"k":"knoblauch","g":8},{"k":"olivenoel","g":12},{"k":"zitrone","g":20},{"k":"pfeffer","g":1}],"schritte":["Kartoffelscheiben 8 Min vorkochen.","Spinat mit Zwiebel und Knoblauch andünsten, Frischkäse und Milch einrühren.","Kartoffeln, Spinat und Kabeljaustücke in die Form schichten.","Käse darüber, 25 Min bei 190 °C backen, mit Zitrone beträufeln."],"makro":{"kcal":921,"p":76.8,"f":34.3,"kh":69.6}},{"id":"h36","name":"Seelachs-Curry mit Kokosmilch & Reis","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"seelachs","g":230},{"k":"basmatireis","g":110},{"k":"kokosmilch","g":110},{"k":"paprika","g":130},{"k":"babyspinat","g":70},{"k":"zwiebel","g":70},{"k":"currypaste","g":22},{"k":"rapsoel","g":12},{"k":"limette","g":20},{"k":"ingwer","g":10},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Ingwer und Currypaste anrösten, Kokosmilch und 150 ml Wasser zugeben.","Paprika 5 Min köcheln, dann Seelachswürfel 6 Min ziehen lassen.","Spinat unterheben, mit Limette und Koriander abschmecken."],"makro":{"kcal":1017,"p":57.5,"f":38.2,"kh":106.3}},{"id":"h37","name":"Seelachs mit Kräuterkruste & Ofengemüse","typ":"haupt","fisch":true,"zeit":35,"zut":[{"k":"seelachs","g":230},{"k":"haferflocken","g":40},{"k":"kartoffeln","g":330},{"k":"karotten","g":150},{"k":"zucchini","g":130},{"k":"olivenoel","g":20},{"k":"petersilie","g":15},{"k":"senf","g":12},{"k":"parmesan","g":25},{"k":"zitrone","g":20},{"k":"knoblauch","g":8}],"schritte":["Kartoffeln, Karotten und Zucchini mit Öl 25 Min bei 200 °C backen.","Haferflocken, Petersilie, Parmesan, Knoblauch und etwas Öl zur Kruste mischen.","Fisch mit Senf bestreichen, Kruste aufdrücken und 12 Min mitbacken.","Mit Zitrone servieren."],"makro":{"kcal":961,"p":67.7,"f":33.7,"kh":90.1}},{"id":"h38","name":"Thunfisch-Nudelsalat mit Mais & Paprika","typ":"haupt","fisch":true,"zeit":20,"zut":[{"k":"thunfisch","g":208},{"k":"vk_nudeln","g":110},{"k":"mais","g":100},{"k":"paprika","g":130},{"k":"kirschtomaten","g":120},{"k":"rote_zwiebel","g":50},{"k":"gr_joghurt","g":100},{"k":"olivenoel","g":15},{"k":"zitrone","g":20},{"k":"petersilie","g":12},{"k":"pfeffer","g":1}],"schritte":["Nudeln kochen und abkühlen lassen.","Gemüse klein schneiden, mit Mais und Thunfisch mischen.","Joghurt, Öl und Zitrone zum Dressing verrühren.","Alles vermengen und mit Petersilie und Pfeffer abschmecken."],"makro":{"kcal":1003,"p":81.5,"f":24.0,"kh":101.4}},{"id":"h39","name":"Thunfisch-Reispfanne mit Erbsen & Ei","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"thunfisch","g":208},{"k":"basmatireis","g":115},{"k":"erbsen","g":130},{"k":"ei","g":116},{"k":"karotten","g":100},{"k":"fruehlingszwiebel","g":30},{"k":"sojasauce","g":22},{"k":"rapsoel","g":18},{"k":"knoblauch","g":8},{"k":"sesam","g":10},{"k":"chiliflocken","g":1}],"schritte":["Reis garen und auskühlen lassen.","Ei in der Pfanne stocken lassen, herausnehmen und zerteilen.","Karotte, Erbsen und Knoblauch 4 Min braten, Reis zugeben und anbraten.","Thunfisch und Ei unterheben, mit Sojasauce, Sesam und Frühlingszwiebeln abschmecken."],"makro":{"kcal":1188,"p":85.6,"f":38.4,"kh":116.7}},{"id":"h40","name":"Garnelen-Nudeln mit Knoblauch & Kirschtomaten","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"garnelen","g":200},{"k":"nudeln","g":115},{"k":"zucchini","g":180},{"k":"kirschtomaten","g":180},{"k":"knoblauch","g":12},{"k":"olivenoel","g":22},{"k":"chili","g":8},{"k":"zitrone","g":25},{"k":"petersilie","g":15},{"k":"parmesan","g":25},{"k":"pfeffer","g":1}],"schritte":["Nudeln al dente kochen.","Knoblauch und Chili in Olivenöl anziehen lassen.","Zucchinistreifen und Kirschtomaten 4 Min braten, Garnelen 3 Min mitbraten.","Mit Nudeln, Zitrone, Petersilie und Parmesan vermengen."],"makro":{"kcal":971,"p":67.1,"f":34.0,"kh":95.0}},{"id":"h41","name":"Garnelen-Curry mit Süßkartoffel","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"garnelen","g":200},{"k":"suesskartoffel","g":280},{"k":"kokosmilch","g":110},{"k":"basmatireis","g":95},{"k":"babyspinat","g":70},{"k":"zwiebel","g":70},{"k":"currypaste","g":22},{"k":"rapsoel","g":12},{"k":"limette","g":20},{"k":"knoblauch","g":8},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Knoblauch und Currypaste anrösten.","Süßkartoffelwürfel mit Kokosmilch und 150 ml Wasser 15 Min garen.","Garnelen 4 Min ziehen lassen, Spinat unterheben, mit Limette und Koriander abschmecken."],"makro":{"kcal":1144,"p":56.2,"f":37.7,"kh":137.6}},{"id":"h42","name":"Forellenfilet mit Bulgur & Gurkensalat","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"forelle","g":200},{"k":"bulgur","g":100},{"k":"gurke","g":180},{"k":"gr_joghurt","g":120},{"k":"dill","g":12},{"k":"zitrone","g":30},{"k":"olivenoel","g":18},{"k":"rote_zwiebel","g":50},{"k":"kirschtomaten","g":120},{"k":"knoblauch","g":6},{"k":"pfeffer","g":1}],"schritte":["Bulgur 12 Min quellen lassen.","Gurke hobeln, mit Joghurt, Dill, Knoblauch und Zitrone anmachen.","Forellenfilets in Öl 3 Min pro Seite braten.","Mit Bulgur, Gurkensalat und Kirschtomaten anrichten."],"makro":{"kcal":973,"p":66.7,"f":35.7,"kh":81.3}},{"id":"h43","name":"Makrele auf Kartoffel-Feldsalat","typ":"haupt","fisch":true,"zeit":25,"zut":[{"k":"makrele","g":150},{"k":"kartoffeln","g":350},{"k":"feldsalat","g":80},{"k":"rote_zwiebel","g":60},{"k":"radieschen","g":80},{"k":"olivenoel","g":18},{"k":"apfelessig","g":18},{"k":"senf","g":12},{"k":"schnittlauch","g":12},{"k":"bruehe","g":4},{"k":"pfeffer","g":1}],"schritte":["Kartoffeln garen, noch warm in Scheiben schneiden.","Mit Brühe, Essig, Senf, Öl und Zwiebel marinieren, 10 Min ziehen lassen.","Feldsalat und Radieschen unterheben.","Makrelenfilet darauf zerteilen, Schnittlauch und Pfeffer darüber."],"makro":{"kcal":801,"p":42.3,"f":41.9,"kh":59.5}},{"id":"h44","name":"Zanderfilet mit Kräuterkartoffeln & Bohnen","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"zander","g":230},{"k":"kartoffeln","g":350},{"k":"gruene_bohnen","g":200},{"k":"butter","g":12},{"k":"olivenoel","g":15},{"k":"petersilie","g":15},{"k":"knoblauch","g":8},{"k":"zitrone","g":25},{"k":"mandeln","g":20},{"k":"salz","g":1},{"k":"pfeffer","g":1}],"schritte":["Kartoffeln garen und in Butter mit Petersilie schwenken.","Bohnen dämpfen und mit gerösteten Mandeln und Knoblauch anbraten.","Zanderfilet in Öl auf der Hautseite 4 Min braten, wenden und 2 Min fertig garen.","Mit Zitrone servieren."],"makro":{"kcal":861,"p":60.2,"f":37.4,"kh":67.8}},{"id":"h45","name":"Teriyaki-Lachs-Bowl mit Reis & Erbsen","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"lachs","g":170},{"k":"basmatireis","g":115},{"k":"erbsen","g":120},{"k":"karotten","g":100},{"k":"weisskohl","g":100},{"k":"sojasauce","g":25},{"k":"honig","g":12},{"k":"ingwer","g":10},{"k":"sesam","g":12},{"k":"rapsoel","g":12},{"k":"fruehlingszwiebel","g":25}],"schritte":["Reis garen.","Sojasauce, Honig und Ingwer zur Glasur einkochen.","Lachs 3 Min pro Seite braten und mit der Glasur bestreichen.","Erbsen, Karotte und Kohl kurz pfannenrühren, alles in der Schale anrichten, Sesam und Frühlingszwiebeln darüber."],"makro":{"kcal":1160,"p":56.0,"f":42.1,"kh":128.0}},{"id":"h46","name":"Mediterrane Fischpfanne mit Couscous","typ":"haupt","fisch":true,"zeit":30,"zut":[{"k":"seelachs","g":230},{"k":"couscous","g":100},{"k":"paprika","g":140},{"k":"zucchini","g":150},{"k":"kirschtomaten","g":130},{"k":"zwiebel","g":70},{"k":"olivenoel","g":20},{"k":"knoblauch","g":8},{"k":"oregano","g":3},{"k":"zitrone","g":25},{"k":"petersilie","g":12}],"schritte":["Couscous mit kochender Brühe 8 Min quellen lassen.","Zwiebel, Paprika und Zucchini in Öl 6 Min braten.","Tomaten und Oregano zugeben, Fischwürfel auflegen und 7 Min zugedeckt garen.","Mit Zitrone, Petersilie und Couscous servieren."],"makro":{"kcal":871,"p":60.8,"f":25.3,"kh":94.4}},{"id":"h47","name":"Linsen-Bolognese mit Vollkornnudeln","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"beluga_linsen","g":90},{"k":"vk_nudeln","g":110},{"k":"passierte_tomaten","g":250},{"k":"karotten","g":110},{"k":"sellerie","g":80},{"k":"zwiebel","g":70},{"k":"tomatenmark","g":25},{"k":"olivenoel","g":18},{"k":"parmesan","g":35},{"k":"italienische_kraeuter","g":3},{"k":"knoblauch","g":8}],"schritte":["Linsen 20 Min garen.","Karotte, Sellerie und Zwiebel fein würfeln und andünsten, Tomatenmark mitrösten.","Tomaten, Linsen und Kräuter zugeben, 12 Min köcheln.","Mit Nudeln und Parmesan servieren."],"makro":{"kcal":1176,"p":58.2,"f":33.3,"kh":143.3}},{"id":"h48","name":"Kichererbsen-Curry mit Spinat & Reis","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"kichererbsen","g":250},{"k":"basmatireis","g":110},{"k":"spinat_tk","g":180},{"k":"kokosmilch","g":110},{"k":"passierte_tomaten","g":150},{"k":"zwiebel","g":70},{"k":"currypaste","g":22},{"k":"rapsoel","g":15},{"k":"gr_joghurt","g":100},{"k":"ingwer","g":10},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Ingwer und Currypaste anrösten.","Kichererbsen, Tomaten und Kokosmilch zugeben, 12 Min köcheln.","Spinat unterheben, mit Joghurt und Koriander servieren."],"makro":{"kcal":1262,"p":46.5,"f":47.7,"kh":147.5}},{"id":"h49","name":"Tofu-Gemüsepfanne mit Erdnusssauce & Reis","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"raeuchertofu","g":200},{"k":"basmatireis","g":110},{"k":"brokkoli","g":180},{"k":"paprika","g":130},{"k":"karotten","g":100},{"k":"erdnussbutter","g":30},{"k":"sojasauce","g":22},{"k":"rapsoel","g":15},{"k":"ingwer","g":10},{"k":"limette","g":20},{"k":"knoblauch","g":8}],"schritte":["Reis garen.","Tofuwürfel in Öl rundum knusprig braten, herausnehmen.","Gemüse 6 Min pfannenrühren.","Erdnussmus, Sojasauce, Ingwer, Limette und 80 ml Wasser zur Sauce verrühren, alles vermengen."],"makro":{"kcal":1235,"p":63.6,"f":54.6,"kh":115.9}},{"id":"h50","name":"Räuchertofu-Bowl mit Quinoa & Rotkohl","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"raeuchertofu","g":200},{"k":"quinoa","g":95},{"k":"rotkohl","g":150},{"k":"karotten","g":100},{"k":"apfel","g":100},{"k":"avocado","g":70},{"k":"olivenoel","g":18},{"k":"apfelessig","g":18},{"k":"kuerbiskerne","g":25},{"k":"senf","g":10},{"k":"petersilie","g":12}],"schritte":["Quinoa 15 Min garen.","Rotkohl und Karotte fein hobeln, mit Apfel, Essig, Senf und Öl marinieren.","Tofu würfeln und knusprig braten.","Alles in der Schale anrichten, Avocado, Kürbiskerne und Petersilie darüber."],"makro":{"kcal":1266,"p":62.4,"f":69.6,"kh":84.8}},{"id":"h51","name":"Rote-Linsen-Dal mit Kokosmilch & Reis","typ":"haupt","fisch":false,"zeit":30,"zut":[{"k":"rote_linsen","g":110},{"k":"basmatireis","g":100},{"k":"kokosmilch","g":110},{"k":"passierte_tomaten","g":180},{"k":"babyspinat","g":80},{"k":"zwiebel","g":70},{"k":"ingwer","g":10},{"k":"garam_masala","g":4},{"k":"rapsoel","g":15},{"k":"gr_joghurt","g":100},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Ingwer und Garam Masala in Öl anrösten.","Linsen, Tomaten, Kokosmilch und 250 ml Wasser zugeben, 18 Min weich köcheln.","Spinat unterheben, mit Joghurt und Koriander servieren."],"makro":{"kcal":1267,"p":51.4,"f":41.6,"kh":161.1}},{"id":"h52","name":"Feta-Ofengemüse mit Couscous & Kichererbsen","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"kichererbsen","g":250},{"k":"couscous","g":100},{"k":"feta","g":70},{"k":"zucchini","g":180},{"k":"paprika","g":150},{"k":"rote_zwiebel","g":80},{"k":"kirschtomaten","g":130},{"k":"olivenoel","g":22},{"k":"oregano","g":3},{"k":"zitrone","g":25},{"k":"petersilie","g":12}],"schritte":["Gemüse und Kichererbsen mit Öl und Oregano 25 Min bei 200 °C backen.","Feta in den letzten 8 Min daraufbröseln.","Couscous mit kochender Brühe quellen lassen.","Alles mischen, mit Zitrone und Petersilie abschmecken."],"makro":{"kcal":1187,"p":46.9,"f":46.3,"kh":132.4}},{"id":"h53","name":"Gemüse-Frittata mit Kartoffeln & Parmesan","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"ei","g":232},{"k":"eiklar","g":120},{"k":"kartoffeln","g":300},{"k":"zucchini","g":150},{"k":"paprika","g":120},{"k":"parmesan","g":40},{"k":"milch","g":80},{"k":"olivenoel","g":18},{"k":"zwiebel","g":60},{"k":"basilikum","g":12},{"k":"pfeffer","g":1}],"schritte":["Kartoffelscheiben 8 Min vorkochen.","Zwiebel, Zucchini und Paprika in der ofenfesten Pfanne 5 Min braten, Kartoffeln zugeben.","Eier, Eiklar, Milch und Parmesan verquirlen und angießen.","20 Min bei 180 °C backen, mit Basilikum servieren."],"makro":{"kcal":1057,"p":70.5,"f":55.2,"kh":66.8}},{"id":"h54","name":"Chili sin Carne mit schwarzen Bohnen & Reis","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"schwarze_bohnen","g":250},{"k":"kidneybohnen","g":150},{"k":"basmatireis","g":105},{"k":"passierte_tomaten","g":250},{"k":"paprika","g":140},{"k":"mais","g":80},{"k":"zwiebel","g":80},{"k":"olivenoel","g":18},{"k":"kreuzkuemmel","g":3},{"k":"raeucherpaprika","g":3},{"k":"gr_joghurt","g":100}],"schritte":["Reis garen.","Zwiebel und Paprika andünsten, Gewürze mitrösten.","Bohnen, Mais und Tomaten zugeben, 18 Min köcheln.","Mit Reis und einem Klecks Joghurt servieren."],"makro":{"kcal":1274,"p":55.8,"f":25.4,"kh":178.4}},{"id":"h55","name":"Spinat-Feta-Nudeln mit Sonnenblumenkernen","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"vk_nudeln","g":115},{"k":"spinat_tk","g":200},{"k":"feta","g":70},{"k":"frischkaese","g":70},{"k":"milch","g":100},{"k":"sonnenblumenkerne","g":25},{"k":"knoblauch","g":10},{"k":"olivenoel","g":18},{"k":"zitrone","g":20},{"k":"parmesan","g":25},{"k":"chiliflocken","g":1}],"schritte":["Nudeln kochen.","Knoblauch in Öl andünsten, Spinat zugeben und ausdampfen lassen.","Frischkäse und Milch einrühren, Feta unterheben.","Mit Nudeln vermengen, Kerne, Parmesan, Zitrone und Chili darüber."],"makro":{"kcal":1185,"p":58.1,"f":63.3,"kh":85.2}},{"id":"h56","name":"Quinoa-Gemüse-Pfanne mit Ei & Avocado","typ":"haupt","fisch":false,"zeit":25,"zut":[{"k":"quinoa","g":95},{"k":"ei","g":174},{"k":"brokkoli","g":180},{"k":"paprika","g":130},{"k":"kirschtomaten","g":120},{"k":"avocado","g":70},{"k":"olivenoel","g":18},{"k":"zwiebel","g":60},{"k":"kuerbiskerne","g":20},{"k":"zitrone","g":20},{"k":"chiliflocken","g":1}],"schritte":["Quinoa 15 Min garen.","Zwiebel, Brokkoli und Paprika 6 Min braten, Tomaten zugeben.","Quinoa untermischen, Mulden formen und die Eier darin stocken lassen.","Avocado, Kürbiskerne, Zitrone und Chili darüber."],"makro":{"kcal":1144,"p":53.0,"f":62.9,"kh":79.6}},{"id":"h57","name":"Süßkartoffel-Bowl mit Kichererbsen & Tahini","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"suesskartoffel","g":300},{"k":"kichererbsen","g":250},{"k":"babyspinat","g":70},{"k":"tahini","g":30},{"k":"gr_joghurt","g":100},{"k":"olivenoel","g":18},{"k":"zitrone","g":25},{"k":"kreuzkuemmel","g":3},{"k":"rote_zwiebel","g":60},{"k":"kuerbiskerne","g":20},{"k":"petersilie","g":12}],"schritte":["Süßkartoffelwürfel und Kichererbsen mit Öl und Kreuzkümmel 28 Min bei 200 °C rösten.","Tahini, Joghurt, Zitrone und etwas Wasser zur Sauce verrühren.","Alles auf Spinat anrichten.","Zwiebel, Kürbiskerne und Petersilie darüber."],"makro":{"kcal":1142,"p":46.0,"f":53.1,"kh":105.5}},{"id":"h58","name":"Blumenkohl-Linsen-Curry mit Reis","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"blumenkohl","g":300},{"k":"rote_linsen","g":100},{"k":"basmatireis","g":100},{"k":"kokosmilch","g":110},{"k":"passierte_tomaten","g":180},{"k":"zwiebel","g":70},{"k":"currypaste","g":22},{"k":"rapsoel","g":15},{"k":"gr_joghurt","g":100},{"k":"ingwer","g":10},{"k":"koriander","g":10}],"schritte":["Reis garen.","Zwiebel, Ingwer und Currypaste anrösten.","Linsen, Blumenkohlröschen, Tomaten, Kokosmilch und 250 ml Wasser zugeben.","20 Min köcheln, mit Joghurt und Koriander servieren."],"makro":{"kcal":1311,"p":54.8,"f":43.1,"kh":163.9}},{"id":"h59","name":"Ratatouille mit Polenta & Mozzarella","typ":"haupt","fisch":false,"zeit":35,"zut":[{"k":"aubergine","g":200},{"k":"zucchini","g":180},{"k":"paprika","g":150},{"k":"passierte_tomaten","g":250},{"k":"polenta","g":95},{"k":"mozzarella","g":125},{"k":"milch","g":200},{"k":"olivenoel","g":22},{"k":"knoblauch","g":10},{"k":"oregano","g":3},{"k":"basilikum","g":12}],"schritte":["Auberginen-, Zucchini- und Paprikawürfel in Öl kräftig anbraten.","Knoblauch, Tomaten und Oregano zugeben, 15 Min schmoren.","Polenta in Milch und Wasser 8 Min quellen lassen.","Mozzarella über das Gemüse geben, kurz schmelzen lassen, Basilikum darüber."],"makro":{"kcal":1117,"p":52.1,"f":44.0,"kh":118.3}},{"id":"h60","name":"Ofenkartoffeln mit Hüttenkäse & Kräuterquark","typ":"haupt","fisch":false,"zeit":45,"zut":[{"k":"kartoffeln","g":400},{"k":"huettenkaese","g":200},{"k":"magerquark","g":200},{"k":"ei","g":116},{"k":"schnittlauch","g":15},{"k":"petersilie","g":12},{"k":"olivenoel","g":15},{"k":"radieschen","g":80},{"k":"gurke","g":120},{"k":"leinsamen","g":12},{"k":"pfeffer","g":1}],"schritte":["Kartoffeln halbieren, mit Öl einreiben und 35 Min bei 200 °C backen.","Quark und Hüttenkäse mit Kräutern und Pfeffer verrühren.","Eier hart kochen und vierteln.","Mit Radieschen, Gurke, Eiern und Leinsamen anrichten."],"makro":{"kcal":1012,"p":76.3,"f":41.6,"kh":79.6}},{"id":"s01","name":"Schoko-Bananen-Shake mit Haferflocken","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"whey","g":30},{"k":"milch","g":300},{"k":"banane","g":120},{"k":"haferflocken","g":40},{"k":"kakao","g":8},{"k":"erdnussbutter","g":15}],"schritte":["Alle Zutaten in den Mixer geben.","30 Sekunden cremig mixen, bei Bedarf mit Wasser verdünnen."],"makro":{"kcal":629,"p":46.3,"f":17.5,"kh":68.6}},{"id":"s02","name":"Beeren-Skyr-Shake mit Leinsamen","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"skyr","g":200},{"k":"milch","g":250},{"k":"beeren_tk","g":150},{"k":"haferflocken","g":35},{"k":"leinsamen","g":15},{"k":"honig","g":10}],"schritte":["Skyr, Milch und Beeren mixen.","Haferflocken, Leinsamen und Honig zugeben und erneut kurz mixen."],"makro":{"kcal":552,"p":39.5,"f":13.5,"kh":61.2}},{"id":"s03","name":"Erdnuss-Bananen-Shake","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"magerquark","g":200},{"k":"milch","g":280},{"k":"banane","g":120},{"k":"erdnussbutter","g":25},{"k":"haferflocken","g":35},{"k":"zimt","g":1}],"schritte":["Quark mit Milch glattmixen.","Banane, Erdnussmus, Haferflocken und Zimt zugeben und cremig mixen."],"makro":{"kcal":653,"p":45.8,"f":20.1,"kh":70.5}},{"id":"s04","name":"Mango-Kokos-Shake","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"whey","g":30},{"k":"skyr","g":150},{"k":"hafermilch","g":250},{"k":"mango","g":180},{"k":"kokosraspel","g":12},{"k":"limette","g":10}],"schritte":["Mango mit Haferdrink pürieren.","Skyr, Proteinpulver, Kokosraspeln und Limettensaft untermixen."],"makro":{"kcal":511,"p":44.7,"f":14.1,"kh":48.8}},{"id":"s05","name":"Zimt-Apfel-Shake","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"magerquark","g":200},{"k":"milch","g":280},{"k":"apfel","g":150},{"k":"haferflocken","g":45},{"k":"zimt","g":2},{"k":"walnuesse","g":15},{"k":"honig","g":10}],"schritte":["Apfel entkernen und mit Milch pürieren.","Quark, Haferflocken, Walnüsse, Zimt und Honig zugeben und mixen."],"makro":{"kcal":640,"p":42.3,"f":18.0,"kh":75.4}},{"id":"s06","name":"Grüner Shake mit Spinat & Erdnussmus","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"whey","g":30},{"k":"milch","g":280},{"k":"babyspinat","g":60},{"k":"banane","g":120},{"k":"erdnussbutter","g":20},{"k":"chiasamen","g":12}],"schritte":["Spinat mit Milch und Banane fein pürieren.","Proteinpulver, Erdnussmus und Chiasamen untermixen, 3 Min quellen lassen."],"makro":{"kcal":545,"p":43.6,"f":20.0,"kh":44.7}},{"id":"s07","name":"Himbeer-Vanille-Quarkshake","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"magerquark","g":220},{"k":"milch","g":280},{"k":"himbeeren","g":125},{"k":"haferflocken","g":40},{"k":"vanille","g":2},{"k":"mandeln","g":20},{"k":"honig","g":10}],"schritte":["Himbeeren mit Milch pürieren.","Quark, Haferflocken, Mandeln, Vanille und Honig zugeben und cremig mixen."],"makro":{"kcal":639,"p":47.1,"f":18.5,"kh":62.2}},{"id":"s08","name":"Schoko-Cashew-Shake mit Datteln","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"whey","g":30},{"k":"milch","g":300},{"k":"datteln","g":40},{"k":"cashews","g":20},{"k":"kakao","g":10},{"k":"haferflocken","g":30}],"schritte":["Datteln 5 Min in warmem Wasser einweichen.","Mit allen übrigen Zutaten 45 Sekunden glattmixen."],"makro":{"kcal":625,"p":44.9,"f":18.2,"kh":67.3}},{"id":"s09","name":"Ananas-Skyr-Shake mit Ingwer","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"skyr","g":250},{"k":"hafermilch","g":250},{"k":"ananas","g":180},{"k":"haferflocken","g":35},{"k":"ingwer","g":6},{"k":"honig","g":10},{"k":"kuerbiskerne","g":15}],"schritte":["Ananas mit Haferdrink und Ingwer pürieren.","Skyr, Haferflocken, Kerne und Honig zugeben und kurz mixen."],"makro":{"kcal":609,"p":39.8,"f":14.3,"kh":78.5}},{"id":"s10","name":"Beeren-Hafer-Shake mit Mandeln","typ":"shake","fisch":false,"zeit":5,"zut":[{"k":"whey","g":30},{"k":"magerquark","g":150},{"k":"milch","g":280},{"k":"beeren_tk","g":150},{"k":"haferflocken","g":40},{"k":"mandeln","g":20}],"schritte":["Beeren mit Milch pürieren.","Quark, Proteinpulver, Haferflocken und Mandeln zugeben und cremig mixen."],"makro":{"kcal":678,"p":62.6,"f":19.6,"kh":58.8}}],"training":[{"id":"push","name":"Push","fokus":"Brust · Schulter · Trizeps","farbe":"#E8734A","uebungen":[{"id":"p1","name":"Langhantel-Bankdrücken","equip":"Langhantel + Bank + Rack","saetze":3,"wdh":"5–8","pause":"3 min","rpe":"RPE 8","hinweis":"Schulterblätter zusammenziehen und fixieren, Stange zur unteren Brust. Basisübung – hier zuerst Gewicht steigern.","progression":"Schaffst du 3×8 sauber, nächste Einheit +2,5 kg."},{"id":"p2","name":"Schrägbank-Kurzhanteldrücken (30–45°)","equip":"Kurzhanteln + verstellbare Bank","saetze":3,"wdh":"8–12","pause":"2 min","rpe":"RPE 8–9","hinweis":"Obere Brust – bei aufrechter Haltung oft der Schwachpunkt. Tiefe Dehnung unten, nicht ganz durchstrecken.","progression":"Bei 3×12 auf beiden Seiten: nächste Hantelstufe, zurück auf 8 Wdh."},{"id":"p3","name":"Dips an den Dip-Griffen","equip":"Rack-Dipgriffe (ggf. Zusatzgewicht)","saetze":3,"wdh":"8–12","pause":"2 min","rpe":"RPE 9","hinweis":"Aufrechter Oberkörper = mehr Trizeps, leicht vorgelehnt = mehr Brust. Für Armfokus aufrecht bleiben.","progression":"Über 3×12 mit Körpergewicht: Zusatzgewicht per Gürtel oder Kurzhantel zwischen den Füßen."},{"id":"p4","name":"Kurzhantel-Seitheben","equip":"Kurzhanteln","saetze":3,"wdh":"12–15","pause":"75 s","rpe":"RPE 9–10","hinweis":"Seitliche Schulter macht optisch die Breite. Leicht vorgebeugt, Ellenbogen führt, kein Schwung.","progression":"Hier bewusst leicht bleiben und die Wiederholungen erhöhen, bevor du das Gewicht steigerst."},{"id":"p5","name":"Trizepsdrücken am Kabel (Überkopfzug)","equip":"Kabelzug oben","saetze":3,"wdh":"10–15","pause":"75 s","rpe":"RPE 9","hinweis":"Ellenbogen eng am Körper fixieren, unten kurz halten. Direkte Trizepsarbeit für den Armfokus.","progression":"Double Progression: 10 → 15 Wdh aufbauen, dann eine Gewichtsstufe hoch."}]},{"id":"pull","name":"Pull","fokus":"Rücken · Bizeps · hintere Schulter","farbe":"#4A8FE8","uebungen":[{"id":"z1","name":"Klimmzüge (Obergriff)","equip":"Klimmzugstange am Rack (ggf. Zusatzgewicht)","saetze":3,"wdh":"6–10","pause":"3 min","rpe":"RPE 8","hinweis":"Volle Streckung unten, Brust zur Stange. Bei weniger als 6 Wdh: negative Wiederholungen langsam absenken.","progression":"Ab 3×10 mit Körpergewicht Zusatzgewicht anhängen und zurück auf 6 Wdh."},{"id":"z2","name":"Langhantel-Rudern vorgebeugt","equip":"Langhantel","saetze":3,"wdh":"6–10","pause":"2–3 min","rpe":"RPE 8","hinweis":"Oberkörper ca. 45°, Rücken gerade, Stange zum Bauchnabel ziehen. Kein Schwung aus der Hüfte.","progression":"Bei 3×10: +2,5 kg. Technik geht vor Gewicht."},{"id":"z3","name":"Face Pulls am Kabel","equip":"Kabelzug oben","saetze":3,"wdh":"12–15","pause":"75 s","rpe":"RPE 8","hinweis":"Hintere Schulter und Schulterstabilität – das Gegengewicht zum vielen Drücken. Zum Gesicht ziehen, außenrotieren.","progression":"Gewicht nur langsam steigern, Kontrolle ist hier wichtiger als Last."},{"id":"z4","name":"Langhantel-Curls","equip":"Langhantel (oder SZ-Stange)","saetze":3,"wdh":"8–12","pause":"90 s","rpe":"RPE 9","hinweis":"Oberarme fixiert am Körper, kein Zurücklehnen. Kernübung für den Bizepsumfang.","progression":"Bei 3×12: +2,5 kg (kleinste Scheiben), zurück auf 8 Wdh."},{"id":"z5","name":"Kurzhantel-Hammercurls","equip":"Kurzhanteln","saetze":3,"wdh":"10–12","pause":"75 s","rpe":"RPE 9–10","hinweis":"Neutraler Griff trifft Brachialis und Unterarm – das schiebt den Arm optisch von innen auf.","progression":"Alternierend oder beidseitig, letzter Satz gern als Drop-Satz zum Abschluss."}]},{"id":"beine","name":"Beine & Bauch","fokus":"Quadrizeps · Rückseite · Rumpf","farbe":"#4AA36B","uebungen":[{"id":"b1","name":"Langhantel-Kniebeuge","equip":"Langhantel + Rack","saetze":3,"wdh":"5–8","pause":"3 min","rpe":"RPE 8","hinweis":"Ablagen auf Brusthöhe, Sicherheitsablagen setzen. Tiefe: mindestens bis Oberschenkel parallel.","progression":"Bei 3×8: +5 kg. Wichtigster systemischer Reiz der Woche – nicht auslassen."},{"id":"b2","name":"Rumänisches Kreuzheben","equip":"Langhantel","saetze":3,"wdh":"8–10","pause":"2–3 min","rpe":"RPE 8","hinweis":"Hüfte nach hinten schieben, leicht gebeugte Knie, Stange nah am Bein. Dehnung in der Beinrückseite spüren.","progression":"Bei 3×10: +5 kg. Rücken bleibt durchgehend neutral."},{"id":"b3","name":"Bulgarian Split Squat","equip":"Kurzhanteln + Bank","saetze":3,"wdh":"8–12 je Bein","pause":"90 s","rpe":"RPE 9","hinweis":"Hinteres Bein auf der Bank, vorderer Fuß weit genug vorn. Gleicht Seitenunterschiede aus.","progression":"Erst Wiederholungen auf 12 je Bein steigern, dann schwerere Kurzhanteln."},{"id":"b4","name":"Wadenheben stehend","equip":"Langhantel im Rack oder Kurzhanteln","saetze":3,"wdh":"12–20","pause":"60 s","rpe":"RPE 9–10","hinweis":"Volle Bewegungsamplitude, oben 1 Sekunde halten, unten kontrolliert absenken.","progression":"Hohe Wiederholungen, Tempo betonen – Waden brauchen viel Volumen."},{"id":"b5","name":"Hanging Leg Raises","equip":"Klimmzugstange","saetze":3,"wdh":"10–15","pause":"60 s","rpe":"RPE 9","hinweis":"Becken am Ende leicht einrollen, nicht schwingen. Zu schwer? Knie anziehen statt gestreckte Beine.","progression":"Ab 3×15 gestreckt: Kurzhantel zwischen den Füßen einklemmen."}]}],"progression":"Double Progression: Bleib beim gleichen Gewicht, bis du in allen 3 Sätzen die obere Wiederholungszahl erreichst – dann erhöhst du. Der letzte Satz darf bis 1–2 Wiederholungen vor dem Muskelversagen gehen. Alle 6–8 Wochen eine leichtere Deload-Woche mit ca. 60 % der Gewichte einlegen.","aufwaermen":["5 Min lockeres Aufwärmen (Seilspringen, Ergometer oder zügiges Gehen)","2 Aufwärmsätze bei der ersten Übung: 1× 12 Wdh mit ca. 40 %, 1× 5 Wdh mit ca. 70 % des Arbeitsgewichts","Schultern vor Push- und Pull-Tagen kreisen und mit leichten Face Pulls mobilisieren"]};
+const Z = DATEN.zutaten, R = DATEN.rezepte, TR = DATEN.training;
+const TAGE = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const TAGE_K = ["Mo","Di","Mi","Do","Fr","Sa","So"];
+const SLOTS2 = ["Mahlzeit 1","Mahlzeit 2"];
+const SLOTS3 = ["Mahlzeit 1","Mahlzeit 2","Mahlzeit 3"];
+const KG = DATEN.koerper.gewicht_kg;
+
+/* ============ State ============ */
+const DEF = {
+  tab:"training", kcal:2800, proteinProKg:1.5, mahlzeiten:2,
+  woche:null, wocheSeed:null, tagIdx:0,
+  wIdx:0, wLog:{}, wAktiv:null, historie:[],
+  einkaufTage:[0,1,2,3,4,5,6], abgehakt:{}
+};
+let S = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem("aufbau_v1");
+    if(raw) return Object.assign({}, DEF, JSON.parse(raw));
+  }catch(e){ console.warn("localStorage nicht verfügbar – Daten werden nicht gespeichert.", e); }
+  return JSON.parse(JSON.stringify(DEF));
+}
+function save(){
+  try{ localStorage.setItem("aufbau_v1", JSON.stringify(S)); }catch(e){}
+}
+const proteinZiel = () => Math.round(KG * S.proteinProKg);
+
+/* ============ Zufall (deterministisch pro Woche) ============ */
+function rng(seed){
+  let t = seed >>> 0;
+  return function(){
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const pick = (arr, rnd) => arr[Math.floor(rnd() * arr.length)];
+function shuffle(arr, rnd){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+/* ============ Wochenplan ============ */
+const FRUEH = R.filter(r => r.typ === "fruehstueck");
+const HAUPT = R.filter(r => r.typ === "haupt");
+const SHAKE = R.filter(r => r.typ === "shake");
+const HAUPT_FISCH = HAUPT.filter(r => r.fisch);
+const HAUPT_OHNE  = HAUPT.filter(r => !r.fisch);
+const FRUEH_FISCH = FRUEH.filter(r => r.fisch);
+const FRUEH_OHNE  = FRUEH.filter(r => !r.fisch);
+
+function planeWoche(seed){
+  const rnd = rng(seed);
+  const n = S.mahlzeiten;
+  // genau 2 Fischtage, Shakes max. 3x/Woche und nie an zwei Tagen hintereinander
+  const fischTage = shuffle([0,1,2,3,4,5,6], rnd).slice(0, DATEN.ziele.fischtage);
+  let shakeTage = [];
+  if(n === 3){
+    const kand = shuffle([0,1,2,3,4,5,6], rnd);
+    for(const t of kand){
+      if(shakeTage.length >= DATEN.ziele.shakes_max) break;
+      if(shakeTage.some(x => Math.abs(x - t) === 1)) continue;
+      shakeTage.push(t);
+    }
+  }
+  const benutztF = new Set(), benutztH = new Set(), benutztS = new Set();
+  const frei = (liste, benutzt) => { const f = liste.filter(r => !benutzt.has(r.id)); return f.length ? f : liste; };
+
+  const tage = [];
+  for(let d = 0; d < 7; d++){
+    const istFisch = fischTage.includes(d);
+    const hatShake = shakeTage.includes(d);
+    let best = null;
+    for(let versuch = 0; versuch < 40; versuch++){
+      const mahlzeiten = [];
+      mahlzeiten.push(pick(frei(FRUEH_OHNE, benutztF), rnd));
+      mahlzeiten.push(pick(frei(istFisch ? HAUPT_FISCH : HAUPT_OHNE, benutztH), rnd));
+      if(n === 3){
+        mahlzeiten.push(hatShake ? pick(frei(SHAKE, benutztS), rnd)
+                                 : pick(frei(HAUPT_OHNE.filter(r => r.id !== mahlzeiten[1].id), benutztH), rnd));
+      }
+      const basis = mahlzeiten.reduce((s, m) => s + m.makro.kcal, 0);
+      const f = S.kcal / basis;
+      const prot = mahlzeiten.reduce((s, m) => s + m.makro.p, 0) * f;
+      const score = Math.abs(f - (n === 2 ? 1.45 : 1.10)) + (prot < proteinZiel() ? 5 : 0);
+      if(!best || score < best.score) best = { mahlzeiten, f, score };
+      if(score < 0.08) break;
+    }
+    best.mahlzeiten.forEach(m => {
+      if(m.typ === "fruehstueck") benutztF.add(m.id);
+      else if(m.typ === "shake") benutztS.add(m.id);
+      else benutztH.add(m.id);
+    });
+    const faktor = Math.min(2.0, Math.max(0.7, Math.round(best.f * 20) / 20));
+    tage.push({ fisch: istFisch, faktor, ids: best.mahlzeiten.map(m => m.id) });
+  }
+  return { seed, mahlzeiten: n, kcal: S.kcal, tage };
+}
+
+function neueWoche(seed){
+  S.wocheSeed = seed !== undefined ? seed : (Date.now() % 1000000);
+  S.woche = planeWoche(S.wocheSeed);
+  S.abgehakt = {};
+  save();
+}
+function checkWoche(){
+  if(!S.woche || S.woche.mahlzeiten !== S.mahlzeiten || S.woche.kcal !== S.kcal) neueWoche(S.wocheSeed ?? undefined);
+}
+const rez = id => R.find(r => r.id === id);
+function tagMakros(t){
+  const m = { kcal:0, p:0, f:0, kh:0 };
+  t.ids.forEach(id => { const r = rez(id);
+    m.kcal += r.makro.kcal * t.faktor; m.p += r.makro.p * t.faktor;
+    m.f += r.makro.f * t.faktor; m.kh += r.makro.kh * t.faktor; });
+  return m;
+}
+/* Mengen runden: Stückzutaten auf halbe Stück, alles andere auf 5 g */
+function menge(key, gramm){
+  const z = Z[key];
+  if(z.vorrat) return { txt: "nach Geschmack", g: 0 };
+  if(z.stueck && gramm / z.stueck >= 0.4){
+    const st = Math.round(gramm / z.stueck * 2) / 2;
+    const einh = st === 1 ? "Stück" : "Stück";
+    return { txt: `${st.toString().replace(".",",")} ${einh}`, g: st * z.stueck };
+  }
+  const g = gramm < 20 ? Math.round(gramm) : Math.round(gramm / 5) * 5;
+  return { txt: `${g} ${einheit(key)}`, g };
+}
+const einheit = key => /\d+\s*(ml|l\b)/i.test(Z[key].packname) ? "ml" : "g";
+
+/* ============ Rendering: Training ============ */
+function renderTraining(){
+  const plan = TR[S.wIdx % 3];
+  const naechste = TR[(S.wIdx + 1) % 3];
+  const log = S.wAktiv && S.wAktiv.planId === plan.id ? S.wAktiv : null;
+  const farbe = plan.id === "push" ? "var(--push)" : plan.id === "pull" ? "var(--pull)" : "var(--beine)";
+
+  let h = `<div class="hero" style="--acc:${farbe}">
+    <span class="day-pill"><span class="dot" style="background:${farbe}"></span>Heutige Einheit</span>
+    <h2 style="margin-top:10px">${plan.name}</h2>
+    <div class="muted">${plan.fokus}</div>
+    <div class="tiny" style="margin-top:12px">5 Übungen · 15 Sätze · danach folgt ${naechste.name}</div>
+  </div>`;
+
+  plan.uebungen.forEach((u, i) => {
+    const letzte = S.wLog[u.id];
+    const akt = log && log.saetze[u.id] ? log.saetze[u.id] : null;
+    h += `<div class="ex" id="ex-${u.id}">
+      <div class="ex-head" onclick="toggleEx('${u.id}')">
+        <div class="ex-num">${i+1}</div>
+        <div style="flex:1;min-width:0">
+          <div class="ex-title">${u.name}</div>
+          <div class="ex-meta">${u.saetze} × ${u.wdh} Wdh · ${u.pause} Pause · ${u.rpe}</div>
+        </div>
+        <div class="chev">›</div>
+      </div>
+      <div class="ex-body">
+        <div class="note"><b>${u.equip}</b><br>${u.hinweis}</div>
+        <div class="sets">`;
+    for(let s = 0; s < u.saetze; s++){
+      const a = akt && akt[s] ? akt[s] : {};
+      const lz = letzte ? (letzte.saetze[s] && (letzte.saetze[s].kg !== "" ) ? letzte.saetze[s]
+                          : letzte.saetze.filter(x => x && x.kg !== "").slice(-1)[0]) : null;
+      const vg = a.kg ?? (lz ? lz.kg ?? "" : "");
+      const vw = a.wdh ?? (lz ? lz.wdh ?? "" : "");
+      h += `<div class="set">
+        <div class="set-lbl">${s+1}.</div>
+        <div class="fld"><input type="number" inputmode="decimal" step="0.5" placeholder="–" value="${vg}"
+          oninput="setSatz('${u.id}',${s},'kg',this.value)"><span>kg</span></div>
+        <div class="fld"><input type="number" inputmode="numeric" placeholder="–" value="${vw}"
+          oninput="setSatz('${u.id}',${s},'wdh',this.value)"><span>Wdh</span></div>
+        <button class="set-done ${a.ok?'on':''}" onclick="toggleSatz('${u.id}',${s})" aria-label="Satz abhaken">
+          <svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 7"/></svg></button>
+      </div>`;
+    }
+    h += `</div>`;
+    if(letzte) h += `<div class="last">Letztes Mal (${letzte.datum}): ${letzte.saetze.map(s => s.kg ? `${s.kg} kg × ${s.wdh||"?"}` : "–").join("  ·  ")}</div>`;
+    h += `<div class="note" style="margin:14px 0 0;background:transparent;padding:0;font-size:13px">↗ ${u.progression}</div>
+      </div></div>`;
+  });
+
+  h += `<div class="btn-row" style="margin-top:18px">
+    <button class="btn" onclick="einheitFertig()">Einheit abschließen</button>
+  </div>
+  <div class="btn-row"><button class="btn ghost" onclick="einheitWechseln()">Andere Einheit wählen</button>
+  <button class="btn ghost" onclick="zeigeHistorie()">Verlauf</button></div>
+  <div class="card flat" style="margin-top:18px">
+    <div class="sec-title" style="margin-top:0">Aufwärmen</div>
+    <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--text-2)">
+      ${DATEN.aufwaermen.map(a => `<li style="margin-bottom:5px">${a}</li>`).join("")}</ul>
+    <div class="sec-title">Progression</div>
+    <div class="muted" style="font-size:13.5px">${DATEN.progression}</div>
+  </div>`;
+  document.getElementById("v-training").innerHTML = h;
+}
+
+function toggleEx(id){ document.getElementById("ex-" + id).classList.toggle("open"); }
+function ensureAktiv(){
+  const plan = TR[S.wIdx % 3];
+  if(!S.wAktiv || S.wAktiv.planId !== plan.id) S.wAktiv = { planId: plan.id, saetze: {} };
+  return S.wAktiv;
+}
+function setSatz(uid, i, feld, wert){
+  const a = ensureAktiv();
+  a.saetze[uid] = a.saetze[uid] || [];
+  a.saetze[uid][i] = a.saetze[uid][i] || {};
+  a.saetze[uid][i][feld] = wert === "" ? undefined : parseFloat(wert);
+  save();
+}
+function toggleSatz(uid, i){
+  const a = ensureAktiv();
+  a.saetze[uid] = a.saetze[uid] || [];
+  a.saetze[uid][i] = a.saetze[uid][i] || {};
+  a.saetze[uid][i].ok = !a.saetze[uid][i].ok;
+  save();
+  const el = document.querySelectorAll(`#ex-${uid} .set-done`)[i];
+  el.classList.toggle("on", !!a.saetze[uid][i].ok);
+}
+function einheitFertig(){
+  const plan = TR[S.wIdx % 3];
+  const a = ensureAktiv();
+  const datum = new Date().toLocaleDateString("de-DE", { day:"2-digit", month:"2-digit" });
+  let erfasst = 0;
+  plan.uebungen.forEach(u => {
+    const s = a.saetze[u.id];
+    if(s && s.some(x => x && (x.kg || x.wdh))){
+      S.wLog[u.id] = { datum, saetze: s.map(x => ({ kg: x?.kg ?? "", wdh: x?.wdh ?? "" })) };
+      erfasst++;
+    }
+  });
+  S.historie.unshift({ datum, name: plan.name, uebungen: erfasst });
+  S.historie = S.historie.slice(0, 40);
+  S.wIdx = (S.wIdx + 1) % 3;
+  S.wAktiv = null;
+  save(); renderTraining(); updateHeader();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function einheitWechseln(){
+  openSheet(`<h2 style="font-size:19px;margin-bottom:4px">Einheit wählen</h2>
+    <div class="tiny" style="margin-bottom:14px">Der 3er-Split läuft danach ab dieser Einheit weiter.</div>
+    ${TR.map((t, i) => `<div class="opt"><div><div class="opt-l">${t.name}</div>
+      <div class="tiny">${t.fokus}</div></div>
+      <button class="btn ghost" style="width:auto;padding:9px 16px" onclick="waehleEinheit(${i})">${i === S.wIdx ? "aktuell" : "wählen"}</button></div>`).join("")}`);
+}
+function waehleEinheit(i){ S.wIdx = i; S.wAktiv = null; save(); closeSheet(); renderTraining(); updateHeader(); }
+function zeigeHistorie(){
+  const h = S.historie.length
+    ? S.historie.map(x => `<div class="hist"><span>${x.name}</span><span class="tiny">${x.datum} · ${x.uebungen} Übungen</span></div>`).join("")
+    : `<div class="empty">Noch keine abgeschlossenen Einheiten.</div>`;
+  openSheet(`<h2 style="font-size:19px;margin-bottom:14px">Verlauf</h2>${h}`);
+}
+
+/* ============ Rendering: Ernährung ============ */
+function renderEssen(){
+  checkWoche();
+  const w = S.woche, d = S.tagIdx, t = w.tage[d];
+  const m = tagMakros(t), pz = proteinZiel();
+  const slots = S.mahlzeiten === 2 ? SLOTS2 : SLOTS3;
+
+  let h = `<div class="days">`;
+  w.tage.forEach((tg, i) => {
+    h += `<button class="day-btn ${i === d ? "active" : ""}" onclick="waehleTag(${i})">
+      <div class="d">${TAGE_K[i]}</div><div class="n">${i + 1}</div>
+      <div class="fish">${tg.fisch ? "🐟" : "&nbsp;"}</div></button>`;
+  });
+  h += `</div>`;
+
+  h += `<div class="macros">
+    <div class="macro"><div class="v">${Math.round(m.kcal)}</div><div class="l">kcal</div></div>
+    <div class="macro ${m.p >= pz ? "hit" : ""}"><div class="v">${Math.round(m.p)}</div><div class="l">Protein</div></div>
+    <div class="macro"><div class="v">${Math.round(m.kh)}</div><div class="l">Kohlenh.</div></div>
+    <div class="macro"><div class="v">${Math.round(m.f)}</div><div class="l">Fett</div></div>
+  </div>
+  <div class="tiny" style="margin:-6px 0 16px">Ziel: ${S.kcal} kcal · mind. ${pz} g Protein (${S.proteinProKg.toString().replace(".",",")} g/kg)${t.fisch ? " · Fischtag" : ""}</div>`;
+
+  t.ids.forEach((id, i) => {
+    const r = rez(id);
+    h += `<div class="meal" id="meal-${i}">
+      <div class="meal-head" onclick="toggleMeal(${i})">
+        <div style="flex:1;min-width:0">
+          <div class="meal-slot">${slots[i]}${r.typ === "shake" ? " · Shake" : ""}</div>
+          <h3>${r.name}${r.fisch ? `<span class="badge">🐟 Fisch</span>` : ""}</h3>
+          <div class="tiny" style="margin-top:4px">${Math.round(r.makro.kcal * t.faktor)} kcal ·
+            ${Math.round(r.makro.p * t.faktor)} g Protein · ${r.zeit} Min</div>
+        </div>
+        <button class="reroll" onclick="event.stopPropagation();rerollMahlzeit(${i})" aria-label="Gericht tauschen">↻</button>
+      </div>
+      <div class="meal-body">
+        <div class="sec-title" style="margin-top:4px">Zutaten</div>
+        ${r.zut.map(zi => { const mg = menge(zi.k, zi.g * t.faktor);
+          return `<div class="ing"><span>${Z[zi.k].name}</span><span class="q">${mg.txt}</span></div>`; }).join("")}
+        <div class="sec-title">Zubereitung</div>
+        <ol class="steps">${r.schritte.map(s => `<li>${s}</li>`).join("")}</ol>
+      </div></div>`;
+  });
+
+  h += `<div class="btn-row" style="margin-top:18px">
+      <button class="btn sec" onclick="neueWochePlanen()">Neue Woche würfeln</button></div>
+    <div class="tiny" style="margin-top:10px;text-align:center">
+      Portionen sind auf ${S.kcal} kcal hochgerechnet (Faktor ${t.faktor.toString().replace(".",",")}×).
+      Einzelnes Gericht tauschen mit ↻.</div>`;
+  document.getElementById("v-essen").innerHTML = h;
+}
+function waehleTag(i){ S.tagIdx = i; save(); renderEssen(); updateHeader(); }
+function toggleMeal(i){ document.getElementById("meal-" + i).classList.toggle("open"); }
+
+function rerollMahlzeit(i){
+  const t = S.woche.tage[S.tagIdx];
+  const alt = rez(t.ids[i]);
+  const inWoche = new Set();
+  S.woche.tage.forEach(tg => tg.ids.forEach(id => inWoche.add(id)));
+  let pool = alt.typ === "fruehstueck" ? FRUEH_OHNE
+           : alt.typ === "shake" ? SHAKE
+           : (t.fisch && alt.fisch) ? HAUPT_FISCH : HAUPT_OHNE;
+  let frei = pool.filter(r => !inWoche.has(r.id));
+  if(!frei.length) frei = pool.filter(r => r.id !== alt.id);
+  const neu = frei[Math.floor(Math.random() * frei.length)];
+  t.ids[i] = neu.id;
+  // Tagesfaktor neu berechnen, damit das Kalorienziel erhalten bleibt
+  const basis = t.ids.reduce((s, id) => s + rez(id).makro.kcal, 0);
+  t.faktor = Math.min(2.0, Math.max(0.7, Math.round(S.kcal / basis * 20) / 20));
+  S.abgehakt = {};
+  save(); renderEssen();
+}
+function neueWochePlanen(){
+  neueWoche(Math.floor(Math.random() * 1000000));
+  S.tagIdx = 0; save(); renderEssen(); updateHeader();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============ Rendering: Einkaufsliste ============ */
+function renderEinkauf(){
+  checkWoche();
+  const tage = S.einkaufTage;
+  const summe = {};
+  tage.forEach(d => { const t = S.woche.tage[d];
+    t.ids.forEach(id => rez(id).zut.forEach(zi => {
+      summe[zi.k] = (summe[zi.k] || 0) + zi.g * t.faktor; })); });
+
+  let h = `<div class="sec-title" style="margin-top:8px">Welche Tage einkaufen?</div><div class="chips">`;
+  TAGE_K.forEach((tk, i) => {
+    h += `<button class="chip ${tage.includes(i) ? "on" : ""}" onclick="toggleTag(${i})">${tk}</button>`;
+  });
+  h += `<button class="chip" onclick="alleTage()">Alle</button>
+        <button class="chip" onclick="keineTage()">Keine</button></div>`;
+
+  if(!tage.length){
+    h += `<div class="empty">Wähle mindestens einen Tag aus.</div>`;
+    document.getElementById("v-einkauf").innerHTML = h;
+    return;
+  }
+
+  const abteilungen = {};
+  Object.entries(summe).forEach(([k, g]) => {
+    const z = Z[k];
+    (abteilungen[z.abt] = abteilungen[z.abt] || []).push([k, g]);
+  });
+  const reihenfolge = ["Obst & Gemüse","Kühlregal","Fleisch","Fisch & TK","Trockenwaren","Konserven & Saucen","Öle, Nüsse & Backen","Gewürze & Vorrat"];
+  const sortiert = reihenfolge.filter(a => abteilungen[a]);
+
+  let gesamt = 0, erledigt = 0;
+  let body = "";
+  sortiert.forEach(abt => {
+    const items = abteilungen[abt].sort((a, b) => Z[a[0]].name.localeCompare(Z[b[0]].name, "de"));
+    body += `<div class="sec-title">${abt}</div><div class="card">`;
+    items.forEach(([k, g]) => {
+      const z = Z[k];
+      const an = S.abgehakt[k];
+      gesamt++; if(an) erledigt++;
+      let q;
+      if(z.vorrat){
+        q = `im Vorrat prüfen`;
+      }else if(z.stueck && g / z.stueck >= 0.4){
+        const st = Math.max(1, Math.ceil(g / z.stueck));
+        const gebinde = /St\u00fcck/.test(z.packname) ? "" : ` · ${z.packname}`;
+        q = `<span class="si-pack">${st} St\u00fcck</span>${gebinde} · ${Math.round(g)} g Bedarf`;
+      }else{
+        const gr = Math.round(g / 5) * 5;
+        const packs = Math.max(1, Math.ceil(gr / z.pack));
+        q = `<span class="si-pack">${packs} \u00d7 ${z.packname}</span> · ${gr} ${einheit(k)} Bedarf`;
+      }
+      body += `<div class="shop-item ${an ? "done" : ""}" onclick="toggleKauf('${k}')">
+        <div class="cb ${an ? "on" : ""}"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 7"/></svg></div>
+        <div style="flex:1;min-width:0"><div class="si-name">${z.name}</div><div class="si-q">${q}</div></div>
+      </div>`;
+    });
+    body += `</div>`;
+  });
+
+  const gewaehlt = tage.map(i => TAGE_K[i]).join(", ");
+  h += `<div class="card" style="margin-top:14px">
+      <div class="row"><div><div style="font-weight:600;font-size:15px">${erledigt} von ${gesamt} erledigt</div>
+      <div class="tiny">${tage.length} ${tage.length === 1 ? "Tag" : "Tage"}: ${gewaehlt}</div></div>
+      <button class="btn ghost" style="width:auto;padding:9px 15px" onclick="resetKauf()">Zurücksetzen</button></div></div>`;
+  h += body;
+  h += `<div class="tiny" style="margin:16px 0 0;text-align:center">
+    Packungsgrößen orientieren sich am REWE-Standardsortiment. Bei Mehrfachpackungen bleibt Rest für die Folgewoche.</div>`;
+  document.getElementById("v-einkauf").innerHTML = h;
+}
+function toggleTag(i){
+  const p = S.einkaufTage.indexOf(i);
+  if(p >= 0) S.einkaufTage.splice(p, 1); else S.einkaufTage.push(i);
+  S.einkaufTage.sort((a, b) => a - b);
+  save(); renderEinkauf(); updateHeader();
+}
+function alleTage(){ S.einkaufTage = [0,1,2,3,4,5,6]; save(); renderEinkauf(); updateHeader(); }
+function keineTage(){ S.einkaufTage = []; save(); renderEinkauf(); updateHeader(); }
+function toggleKauf(k){ S.abgehakt[k] = !S.abgehakt[k]; save(); renderEinkauf(); }
+function resetKauf(){ S.abgehakt = {}; save(); renderEinkauf(); }
+
+/* ============ Einstellungen ============ */
+function openSettings(){
+  const pz = proteinZiel();
+  openSheet(`<h2 style="font-size:19px;margin-bottom:16px">Einstellungen</h2>
+    <div class="opt"><div><div class="opt-l">Mahlzeiten pro Tag</div>
+      <div class="tiny">3 Mahlzeiten = kleinere Portionen, inkl. Shake-Tagen</div></div>
+      <div class="seg">
+        <button class="${S.mahlzeiten === 2 ? "on" : ""}" onclick="setMahlzeiten(2)">2</button>
+        <button class="${S.mahlzeiten === 3 ? "on" : ""}" onclick="setMahlzeiten(3)">3</button>
+      </div></div>
+    <div class="opt"><div><div class="opt-l">Kalorienziel</div>
+      <div class="tiny">Verbrauch ${DATEN.koerper.verbrauch_kcal} kcal · Aufbau ab ca. +300</div></div>
+      <div class="stepper"><button onclick="setKcal(-100)">−</button>
+        <span class="val" id="valKcal">${S.kcal} kcal</span>
+        <button onclick="setKcal(100)">+</button></div></div>
+    <div class="opt"><div><div class="opt-l">Protein</div>
+      <div class="tiny" id="valProt">${pz} g pro Tag bei ${KG} kg</div></div>
+      <div class="stepper"><button onclick="setProt(-0.1)">−</button>
+        <span class="val" id="valPk">${S.proteinProKg.toFixed(1).replace(".",",")} g/kg</span>
+        <button onclick="setProt(0.1)">+</button></div></div>
+    <div class="sec-title">Körperdaten</div>
+    <div class="card flat"><div class="muted" style="font-size:13.5px">
+      ${DATEN.koerper.groesse_cm} cm · ${KG} kg · Ø ${DATEN.koerper.verbrauch_kcal} kcal Verbrauch pro Tag</div></div>
+    <div class="sec-title">Equipment</div>
+    <div class="card flat"><ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--text-2)">
+      ${DATEN.equipment.map(e => `<li style="margin-bottom:4px">${e}</li>`).join("")}</ul></div>
+    <div class="sec-title">Daten</div>
+    <button class="btn ghost" onclick="alleZuruecksetzen()">Alles zurücksetzen</button>
+    <div class="tiny" style="margin-top:14px;text-align:center">${R.length} Rezepte · ${Object.keys(Z).length} Zutaten · v${DATEN.version}</div>`);
+}
+function setMahlzeiten(n){ S.mahlzeiten = n; neueWoche(S.wocheSeed); openSettings(); renderEssen(); renderEinkauf(); updateHeader(); }
+function setKcal(d){
+  S.kcal = Math.min(4000, Math.max(1500, S.kcal + d));
+  document.getElementById("valKcal").textContent = S.kcal + " kcal";
+  neueWoche(S.wocheSeed); renderEssen(); renderEinkauf(); updateHeader();
+}
+function setProt(d){
+  S.proteinProKg = Math.min(2.5, Math.max(1.0, Math.round((S.proteinProKg + d) * 10) / 10));
+  document.getElementById("valPk").textContent = S.proteinProKg.toFixed(1).replace(".", ",") + " g/kg";
+  document.getElementById("valProt").textContent = proteinZiel() + " g pro Tag bei " + KG + " kg";
+  save(); renderEssen();
+}
+function alleZuruecksetzen(){
+  if(!confirm("Trainingsverlauf, Gewichte und Wochenplan wirklich löschen?")) return;
+  try{ localStorage.removeItem("aufbau_v1"); }catch(e){}
+  S = JSON.parse(JSON.stringify(DEF));
+  neueWoche(); closeSheet(); renderAlles();
+}
+
+/* ============ Sheet / Tabs / Init ============ */
+function openSheet(html){
+  document.getElementById("sheetIn").innerHTML = `<div class="grip"></div>` + html;
+  document.getElementById("sheet").classList.add("open");
+}
+function closeSheet(){ document.getElementById("sheet").classList.remove("open"); }
+
+function showTab(name){
+  S.tab = name; save();
+  ["training","essen","einkauf"].forEach(t => {
+    document.getElementById("v-" + t).classList.toggle("active", t === name);
+    document.getElementById("t-" + t).classList.toggle("active", t === name);
+  });
+  if(name === "essen") renderEssen();
+  if(name === "einkauf") renderEinkauf();
+  updateHeader();
+  window.scrollTo({ top: 0 });
+}
+function updateHeader(){
+  const t = document.getElementById("hTitle"), s = document.getElementById("hSub");
+  if(S.tab === "training"){
+    t.textContent = "Training";
+    s.textContent = `${TR[S.wIdx % 3].name} · Muskelaufbau, Fokus Oberkörper`;
+  }else if(S.tab === "essen"){
+    t.textContent = "Ernährung";
+    s.textContent = `${TAGE[S.tagIdx]} · ${S.mahlzeiten} Mahlzeiten · ${S.kcal} kcal`;
+  }else{
+    t.textContent = "Einkaufsliste";
+    s.textContent = S.einkaufTage.length === 7 ? "Ganze Woche"
+      : S.einkaufTage.length ? S.einkaufTage.map(i => TAGE_K[i]).join(", ") : "Keine Tage gewählt";
+  }
+}
+function renderAlles(){ renderTraining(); renderEssen(); renderEinkauf(); updateHeader(); }
+
+window.addEventListener("scroll", () => {
+  document.getElementById("hdr").classList.toggle("scrolled", window.scrollY > 4);
+}, { passive: true });
+
+checkWoche();
+showTab(S.tab || "training");
+renderAlles();
+</script>
+</body>
+</html>
